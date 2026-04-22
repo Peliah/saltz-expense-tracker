@@ -1,4 +1,5 @@
 import { LedgerHeader } from '@/components/ledger-header';
+import { LiquidWealthSummaryCard } from '@/components/liquid-wealth-summary-card';
 import { overviewStyles as styles } from '@/stylesheets/overview-stylesheet';
 import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -8,8 +9,7 @@ export default function OverviewScreen() {
     <SafeAreaView style={styles.safeArea} edges={['top']}>
       <ScrollView contentContainerStyle={styles.container}>
         <LedgerHeader />
-        <Text style={styles.heading}>Overview</Text>
-        <Text style={styles.subheading}>Your spending at a glance.</Text>
+        <LiquidWealthSummaryCard />
         <View style={styles.card}>
           <Text style={styles.cardTitle}>This week</Text>
           <Text style={styles.cardBody}>
