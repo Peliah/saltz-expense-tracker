@@ -21,6 +21,7 @@ const MAPPING = {
   'chart.bar.fill': 'bar-chart',
   'lightbulb.fill': 'lightbulb',
   'gearshape.fill': 'settings',
+  'bell.fill': 'notifications',
 } as IconMapping;
 
 /**

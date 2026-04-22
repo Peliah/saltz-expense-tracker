@@ -5,7 +5,6 @@ export const STORAGE_KEYS = {
   AUTH_SETUP_COMPLETE: '@saltz/auth_setup_complete',
 } as const;
 
-/** SecureStore keys should be stable alphanumeric identifiers. */
 const SECURE_AUTH_SETUP_KEY = 'saltz_auth_setup_complete';
 
 export const storage = {

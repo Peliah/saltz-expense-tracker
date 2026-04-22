@@ -1,3 +1,4 @@
+import { LedgerHeader } from '@/components/ledger-header';
 import { overviewStyles as styles } from '@/stylesheets/overview-stylesheet';
 import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -6,6 +7,7 @@ export default function OverviewScreen() {
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
       <ScrollView contentContainerStyle={styles.container}>
+        <LedgerHeader />
         <Text style={styles.heading}>Overview</Text>
         <Text style={styles.subheading}>Your spending at a glance.</Text>
         <View style={styles.card}>
