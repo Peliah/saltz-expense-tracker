@@ -1,4 +1,4 @@
-import { LoadingButton } from '@/components/ui/loading-button';
+import { LoadingButton } from '@/components/shared/ui/loading-button';
 import { verifyEmailStyles as styles } from '@/stylesheets/verify-email-stylesheet';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';

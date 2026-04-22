@@ -1,4 +1,4 @@
-import { LoadingButton } from '@/components/ui/loading-button';
+import { LoadingButton } from '@/components/shared/ui/loading-button';
 import { createAccountStyles as styles } from '@/stylesheets/create-account-stylesheet';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';

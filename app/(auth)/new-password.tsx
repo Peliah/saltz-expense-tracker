@@ -1,4 +1,4 @@
-import { LoadingButton } from '@/components/ui/loading-button';
+import { LoadingButton } from '@/components/shared/ui/loading-button';
 import { useAuthSetup } from '@/context/auth-setup';
 import { newPasswordStyles as styles } from '@/stylesheets/new-password-stylesheet';
 import { useRouter } from 'expo-router';

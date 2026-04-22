@@ -1,4 +1,4 @@
-import { AuthNavigationSync } from '@/components/auth-navigation-sync';
+import { AuthNavigationSync } from '@/components/auth/auth-navigation-sync';
 import { AuthSetupProvider, useAuthSetup } from '@/context/auth-setup';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { manropeFonts } from '@/lib/fonts';

@@ -1,4 +1,4 @@
-import { LoadingButton } from '@/components/ui/loading-button';
+import { LoadingButton } from '@/components/shared/ui/loading-button';
 import { identityVerificationStyles as styles } from '@/stylesheets/identity-verification-stylesheet';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
