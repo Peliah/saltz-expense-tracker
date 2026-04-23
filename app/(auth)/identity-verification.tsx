@@ -1,34 +1,106 @@
 import { useAuthSetup } from '@/context/auth-setup';
+import { getCafEnvironment, getCafMobileToken, getCafPersonId } from '@/lib/caf-env';
 import { identityVerificationStyles as styles } from '@/stylesheets/identity-verification-stylesheet';
+import {
+  CafModuleType,
+  useCafFaceLivenessUI,
+  useCafSdk,
+} from '@caf.io/react-native-sdk';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Alert, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function IdentityVerificationScreen() {
   const { setComplete } = useAuthSetup();
   const router = useRouter();
-  const [permission, requestPermission] = useCameraPermissions();
+  const { initialize, startSDK, response } = useCafSdk();
+  const { applyCafFaceLivenessUI } = useCafFaceLivenessUI();
   const [busy, setBusy] = useState(false);
+  const handledTerminalRef = useRef(false);
 
-  const permissionGranted = permission?.granted === true;
+  const resetFlowState = useCallback(() => {
+    handledTerminalRef.current = false;
+  }, []);
 
   useEffect(() => {
-    if (!permission || permission.granted) return;
-    if (permission.canAskAgain) {
-      void requestPermission();
+    if (handledTerminalRef.current) return;
+
+    if (response.success && response.success.length > 0) {
+      handledTerminalRef.current = true;
+      setBusy(false);
+      void (async () => {
+        await setComplete(true);
+        router.push('/(auth)/new-password');
+      })();
+      return;
     }
-  }, [permission, requestPermission]);
+
+    if (response.cancelled) {
+      handledTerminalRef.current = true;
+      setBusy(false);
+      return;
+    }
+
+    if (response.error) {
+      handledTerminalRef.current = true;
+      setBusy(false);
+      const desc = response.error.description ?? 'Something went wrong. Please try again.';
+      Alert.alert('Verification error', desc);
+      return;
+    }
+
+    if (response.failure) {
+      handledTerminalRef.current = true;
+      setBusy(false);
+      const desc = response.failure.description ?? 'Liveness check did not pass. Please try again.';
+      Alert.alert('Verification failed', desc);
+    }
+  }, [response, router, setComplete]);
 
   const onStartVerification = async () => {
-    if (!permissionGranted || busy) return;
+    if (busy) return;
+
+    const mobileToken = getCafMobileToken();
+    const personId = getCafPersonId();
+    if (!mobileToken || !personId) {
+      Alert.alert(
+        'Configuration required',
+        'Set EXPO_PUBLIC_CAF_MOBILE_TOKEN and EXPO_PUBLIC_CAF_PERSON_ID (or expo.extra.caf in app.json) for a dev build.',
+      );
+      return;
+    }
+
+    resetFlowState();
     setBusy(true);
-    await new Promise((r) => setTimeout(r, 900));
-    setBusy(false);
-    await setComplete(true);
-    router.push('/(auth)/new-password');
+
+    try {
+      await initialize(
+        {
+          mobileToken,
+          personId,
+          environment: getCafEnvironment(),
+          configuration: {
+            presentationOrder: [CafModuleType.FACE_LIVENESS_UI],
+          },
+        },
+        async () => {
+          await applyCafFaceLivenessUI({
+            instructionScreenConfiguration: {
+              title: 'Identity verification',
+              description: 'We will run a quick liveness check to secure your account.',
+              buttonText: 'Continue',
+            },
+          });
+          return true;
+        },
+      );
+      startSDK();
+    } catch {
+      setBusy(false);
+      Alert.alert('Could not start verification', 'Check your network and CAF credentials, then try again.');
+    }
   };
 
   return (
@@ -51,18 +123,14 @@ export default function IdentityVerificationScreen() {
           <View style={styles.cameraArea}>
             <View style={styles.instructionToast}>
               <MaterialIcons name="info-outline" size={14} color="#0051D5" />
-              <Text style={styles.instructionText}>Center your face in the frame</Text>
+              <Text style={styles.instructionText}>Tap start — you will complete liveness in the secure CAF flow</Text>
             </View>
 
             <View style={styles.viewportOuter}>
               <View style={styles.viewportInner}>
-                {permissionGranted ? (
-                  <CameraView style={styles.cameraView} facing="front" />
-                ) : (
-                  <View style={styles.cameraPlaceholder}>
-                    <MaterialIcons name="videocam" size={54} color="#74777F" style={styles.cameraPlaceholderIcon} />
-                  </View>
-                )}
+                <View style={styles.cameraPlaceholder}>
+                  <MaterialIcons name="verified-user" size={54} color="#74777F" style={styles.cameraPlaceholderIcon} />
+                </View>
               </View>
             </View>
 
@@ -73,27 +141,16 @@ export default function IdentityVerificationScreen() {
           </View>
 
           <View style={styles.actionSection}>
-            {!permissionGranted ? (
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel="Enable camera permission"
-                style={styles.primaryButtonReady}
-                onPress={requestPermission}
-              >
-                <Text style={styles.primaryButtonText}>Enable Camera</Text>
-              </Pressable>
-            ) : (
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel="Start Verification"
-                onPress={onStartVerification}
-                disabled={busy}
-                style={[styles.primaryButton, !busy && styles.primaryButtonReady]}
-              >
-                <Text style={styles.primaryButtonText}>{busy ? 'Verifying...' : 'Start Verification'}</Text>
-                <MaterialIcons name="arrow-forward" size={12} color="#FFFFFF" />
-              </Pressable>
-            )}
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Start Verification"
+              onPress={onStartVerification}
+              disabled={busy}
+              style={[styles.primaryButton, !busy && styles.primaryButtonReady]}
+            >
+              <Text style={styles.primaryButtonText}>{busy ? 'Opening…' : 'Start Verification'}</Text>
+              <MaterialIcons name="arrow-forward" size={12} color="#FFFFFF" />
+            </Pressable>
 
             <Pressable accessibilityRole="button" accessibilityLabel="Cancel" onPress={() => router.back()} style={styles.cancelButton}>
               <Text style={styles.cancelButtonText}>Cancel</Text>

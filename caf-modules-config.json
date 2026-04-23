@@ -1,0 +1,6 @@
+{
+  "documentDetector": false,
+  "faceLiveness": true,
+  "documentDetectorUI": false,
+  "faceLivenessUI": true
+}

@@ -32,6 +32,7 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      "@caf.io/react-native-sdk/app.plugin.js",
       "expo-router",
       [
         "expo-splash-screen",
@@ -61,6 +62,11 @@
       "router": {},
       "eas": {
         "projectId": "5ef73bc2-fcda-4051-a268-ccf4c65d817b"
+      },
+      "caf": {
+        "mobileToken": "",
+        "personId": "",
+        "environment": "dev"
       }
     },
     "owner": "peliah"
