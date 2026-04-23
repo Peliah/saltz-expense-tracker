@@ -2,16 +2,16 @@ import { overviewStyles as styles } from '@/stylesheets/overview-stylesheet';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import type { ComponentProps } from 'react';
 import { useCallback, useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import Animated, {
     interpolate,
-    runOnJS,
     useAnimatedStyle,
     useSharedValue,
     withTiming,
     type SharedValue,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { scheduleOnRN } from 'react-native-worklets';
 
 const FAB_SIZE = 56;
 const GAP = 12;
@@ -60,7 +60,7 @@ export function QuickActionFab({ options = DEFAULT_OPTIONS }: QuickActionFabProp
   const close = useCallback(() => {
     progress.value = withTiming(0, { duration: 260 }, (finished) => {
       if (finished) {
-        runOnJS(setBackdrop)(false);
+        scheduleOnRN(setBackdrop, false);
       }
     });
   }, [progress]);
@@ -120,9 +120,6 @@ export function QuickActionFab({ options = DEFAULT_OPTIONS }: QuickActionFabProp
               style={styles.quickFabSatellite}
             >
               <MaterialIcons name={opt.icon} size={22} color="#0047AB" />
-              <Text style={styles.quickFabSatLabel} numberOfLines={1}>
-                {opt.label}
-              </Text>
             </Pressable>
           </Animated.View>
         ))}
