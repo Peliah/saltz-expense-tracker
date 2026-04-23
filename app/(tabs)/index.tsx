@@ -1,6 +1,7 @@
 import { AllocationsSection } from '@/components/overview/allocations-section';
 import { LedgerHeader } from '@/components/overview/ledger-header';
 import { LiquidWealthSummaryCard } from '@/components/overview/liquid-wealth-summary-card';
+import { RecentLedgerSection } from '@/components/overview/recent-ledger-section';
 import { SpendingTrendCard } from '@/components/overview/spending-trend-card';
 import { overviewStyles as styles } from '@/stylesheets/overview-stylesheet';
 import { ScrollView, Text, View } from 'react-native';
@@ -19,6 +20,8 @@ export default function OverviewScreen() {
         <LiquidWealthSummaryCard />
         <AllocationsSection />
         <SpendingTrendCard />
+        <RecentLedgerSection />
+
         <View style={styles.card}>
           <Text style={styles.cardTitle}>This week</Text>
           <Text style={styles.cardBody}>
