@@ -61,7 +61,7 @@ export default function CreateAccountScreen() {
 
           <Text style={styles.footerNote}>
             Already have an account?{' '}
-            <Pressable onPress={() => router.push('/(auth)/verify-email')}>
+            <Pressable onPress={() => router.push('/(auth)/identity-verification')}>
               <Text style={{ fontFamily: 'Manrope-SemiBold', color: '#0d9488' }}>Continue setup</Text>
             </Pressable>
           </Text>
