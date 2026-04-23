@@ -1,6 +1,7 @@
 import { budgetStyles as styles } from '@/stylesheets/budget-stylesheet';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useState } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 
 type CategoryItem = {
@@ -11,7 +12,7 @@ type CategoryItem = {
 };
 
 const CATEGORIES: CategoryItem[] = [
-  { id: 'food', label: 'Food', icon: 'restaurant', active: true },
+  { id: 'food', label: 'Food', icon: 'restaurant' },
   { id: 'travel', label: 'Travel', icon: 'flight' },
   { id: 'salary', label: 'Salary', icon: 'payments' },
   { id: 'shop', label: 'Shop', icon: 'shopping-bag' },
@@ -19,7 +20,14 @@ const CATEGORIES: CategoryItem[] = [
   { id: 'new', label: 'New', icon: 'add' },
 ];
 
-export function CategoryPickerCard() {
+type CategoryPickerCardProps = {
+  onSelectCategory?: (categoryId: string) => void;
+  onPressAddCategory?: () => void;
+};
+
+export function CategoryPickerCard({ onSelectCategory, onPressAddCategory }: CategoryPickerCardProps) {
+  const [activeCategoryId, setActiveCategoryId] = useState('food');
+
   return (
     <View style={styles.categorySection}>
       <View style={styles.categoryCard}>
@@ -35,15 +43,27 @@ export function CategoryPickerCard() {
               key={item.id}
               accessibilityRole="button"
               accessibilityLabel={item.label}
-              style={[styles.categoryTile, item.active ? styles.categoryTileActive : styles.categoryTileInactive]}
+              onPress={() => {
+                setActiveCategoryId(item.id);
+                onSelectCategory?.(item.id);
+              }}
+              style={[
+                styles.categoryTile,
+                activeCategoryId === item.id ? styles.categoryTileActive : styles.categoryTileInactive,
+              ]}
             >
               <MaterialIcons
                 name={item.icon}
                 size={20}
-                color={item.active ? '#00327D' : '#434653'}
+                color={activeCategoryId === item.id ? '#00327D' : '#434653'}
                 style={styles.categoryTileIcon}
               />
-              <Text style={[styles.categoryTileText, item.active ? styles.categoryTileTextActive : styles.categoryTileTextInactive]}>
+              <Text
+                style={[
+                  styles.categoryTileText,
+                  activeCategoryId === item.id ? styles.categoryTileTextActive : styles.categoryTileTextInactive,
+                ]}
+              >
                 {item.label}
               </Text>
             </Pressable>
@@ -51,7 +71,12 @@ export function CategoryPickerCard() {
         </ScrollView>
       </View>
 
-      <Pressable accessibilityRole="button" accessibilityLabel="Add New Category" style={styles.addCategoryButtonOuter}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Add New Category"
+        onPress={onPressAddCategory}
+        style={styles.addCategoryButtonOuter}
+      >
         <LinearGradient
           colors={['#00327D', '#0047AB']}
           start={{ x: 0, y: 0.5 }}

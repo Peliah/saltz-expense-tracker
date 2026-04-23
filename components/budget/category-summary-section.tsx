@@ -26,19 +26,35 @@ const CATEGORY_SUMMARY_ITEMS: CategorySummaryItem[] = [
   { id: 'clothing', name: 'Clothing', budget: '$180', left: '$60 LEFT', icon: 'checkroom', progress: 0.45, tone: 'primary' },
 ];
 
-export function CategorySummarySection() {
+type CategorySummarySectionProps = {
+  onPressViewAll?: () => void;
+  onPressCategory?: (categoryId: string) => void;
+};
+
+export function CategorySummarySection({ onPressViewAll, onPressCategory }: CategorySummarySectionProps) {
   return (
     <View style={styles.categorySummarySection}>
       <View style={styles.categorySummaryHeader}>
         <Text style={styles.categorySummaryTitle}>Categories</Text>
-        <Pressable accessibilityRole="button" accessibilityLabel="View all categories" style={styles.categorySummaryViewAllButton}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="View all categories"
+          onPress={onPressViewAll}
+          style={styles.categorySummaryViewAllButton}
+        >
           <Text style={styles.categorySummaryViewAllText}>View All</Text>
         </Pressable>
       </View>
 
       <View style={styles.categorySummaryList}>
         {CATEGORY_SUMMARY_ITEMS.map((item) => (
-          <View key={item.id} style={styles.categorySummaryCard}>
+          <Pressable
+            key={item.id}
+            accessibilityRole="button"
+            accessibilityLabel={item.name}
+            onPress={() => onPressCategory?.(item.id)}
+            style={styles.categorySummaryCard}
+          >
             <View style={styles.categorySummaryIconWrap}>
               <MaterialIcons name={item.icon} size={16} color="#00327D" />
             </View>
@@ -61,7 +77,7 @@ export function CategorySummarySection() {
                 </Text>
               </View>
             </View>
-          </View>
+          </Pressable>
         ))}
       </View>
     </View>

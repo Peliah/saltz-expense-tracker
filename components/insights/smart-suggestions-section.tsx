@@ -33,13 +33,18 @@ const SUGGESTIONS: SuggestionItem[] = [
   },
 ];
 
-export function SmartSuggestionsSection() {
+type SmartSuggestionsSectionProps = {
+  onPressViewAll?: () => void;
+  onPressAction?: (id: string) => void;
+};
+
+export function SmartSuggestionsSection({ onPressViewAll, onPressAction }: SmartSuggestionsSectionProps) {
   return (
     <View style={styles.smartSuggestionsOuter}>
       <View style={styles.smartSuggestionsSection}>
         <View style={styles.smartSuggestionsHeader}>
           <Text style={styles.smartSuggestionsTitle}>Smart Suggestions</Text>
-          <Pressable accessibilityRole="button" accessibilityLabel="View all suggestions">
+          <Pressable accessibilityRole="button" accessibilityLabel="View all suggestions" onPress={onPressViewAll}>
             <Text style={styles.smartSuggestionsViewAll}>View All</Text>
           </Pressable>
         </View>
@@ -63,7 +68,12 @@ export function SmartSuggestionsSection() {
                     </View>
                   </View>
                   <Text style={styles.smartSuggestionBody}>{item.body}</Text>
-                  <Pressable accessibilityRole="button" accessibilityLabel={item.action} style={styles.smartSuggestionActionRow}>
+                  <Pressable
+                    accessibilityRole="button"
+                    accessibilityLabel={item.action}
+                    onPress={() => onPressAction?.(item.id)}
+                    style={styles.smartSuggestionActionRow}
+                  >
                     <Text style={styles.smartSuggestionActionText}>{item.action}</Text>
                     <MaterialIcons name="chevron-right" size={16} color="#00327D" />
                   </Pressable>

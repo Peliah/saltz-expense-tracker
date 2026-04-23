@@ -22,14 +22,18 @@ const RADIUS = (SIZE - STROKE) / 2;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 const GAP_FACTOR = 0.985;
 
-export function AllocationGraphSection() {
+type AllocationGraphSectionProps = {
+  onPressViewAll?: () => void;
+};
+
+export function AllocationGraphSection({ onPressViewAll }: AllocationGraphSectionProps) {
   let offset = 0;
 
   return (
     <View style={styles.allocationCard}>
       <View style={styles.allocationHeader}>
         <Text style={styles.allocationTitle}>Allocation</Text>
-        <Pressable accessibilityRole="button" accessibilityLabel="View all allocations">
+        <Pressable accessibilityRole="button" accessibilityLabel="View all allocations" onPress={onPressViewAll}>
           <Text style={styles.allocationViewAll}>View All</Text>
         </Pressable>
       </View>

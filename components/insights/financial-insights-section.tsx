@@ -1,9 +1,15 @@
 import { insightsStyles as styles } from '@/stylesheets/insights-stylesheet';
 import { Pressable, Text, View } from 'react-native';
 
-const TIME_TABS = ['Daily', 'Weekly', 'Monthly'] as const;
+export const TIME_TABS = ['Daily', 'Weekly', 'Monthly'] as const;
+export type InsightsTimeTab = (typeof TIME_TABS)[number];
 
-export function FinancialInsightsSection() {
+type FinancialInsightsSectionProps = {
+  activeTab: InsightsTimeTab;
+  onChangeTab: (tab: InsightsTimeTab) => void;
+};
+
+export function FinancialInsightsSection({ activeTab, onChangeTab }: FinancialInsightsSectionProps) {
   return (
     <View style={styles.financialInsightsSection}>
       <View style={styles.financialInsightsHeader}>
@@ -13,9 +19,15 @@ export function FinancialInsightsSection() {
 
       <View style={styles.financialInsightsTabs}>
         {TIME_TABS.map((tab) => {
-          const active = tab === 'Monthly';
+          const active = tab === activeTab;
           return (
-            <Pressable key={tab} accessibilityRole="button" accessibilityLabel={tab} style={[styles.financialInsightsTab, active && styles.financialInsightsTabActive]}>
+            <Pressable
+              key={tab}
+              accessibilityRole="button"
+              accessibilityLabel={tab}
+              onPress={() => onChangeTab(tab)}
+              style={[styles.financialInsightsTab, active && styles.financialInsightsTabActive]}
+            >
               <Text style={[styles.financialInsightsTabText, active && styles.financialInsightsTabTextActive]}>{tab}</Text>
             </Pressable>
           );

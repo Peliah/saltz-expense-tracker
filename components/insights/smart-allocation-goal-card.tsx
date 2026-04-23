@@ -10,7 +10,11 @@ const RADIUS = (RING_SIZE - PROGRESS_STROKE) / 2;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 const PROGRESS = 0.75;
 
-export function SmartAllocationGoalCard() {
+type SmartAllocationGoalCardProps = {
+  onPressAllocate?: () => void;
+};
+
+export function SmartAllocationGoalCard({ onPressAllocate }: SmartAllocationGoalCardProps) {
   return (
     <LinearGradient colors={['#00327D', '#0047AB']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.smartGoalCard}>
       <View style={styles.smartGoalRingWrap}>
@@ -48,7 +52,12 @@ export function SmartAllocationGoalCard() {
           We noticed you&apos;ve spent 40% less on Transport this month. Would you like to re-allocate $150 towards
           your &quot;Vacation Fund&quot;?
         </Text>
-        <Pressable accessibilityRole="button" accessibilityLabel="Allocate Now" style={styles.smartGoalActionButton}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Allocate Now"
+          onPress={onPressAllocate}
+          style={styles.smartGoalActionButton}
+        >
           <Text style={styles.smartGoalActionText}>Allocate Now</Text>
         </Pressable>
       </View>
