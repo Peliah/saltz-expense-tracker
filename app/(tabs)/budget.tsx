@@ -1,26 +1,21 @@
+import { CategoryPickerCard } from '@/components/budget/category-picker-card';
+import { CategorySummarySection } from '@/components/budget/category-summary-section';
+import { MonthlyBurnCard } from '@/components/budget/monthly-burn-card';
+import { SpendingVelocityCard } from '@/components/budget/spending-velocity-card';
+import { LedgerHeader } from '@/components/overview/ledger-header';
 import { budgetStyles as styles } from '@/stylesheets/budget-stylesheet';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function BudgetScreen() {
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.heading}>Budget</Text>
-        <Text style={styles.subheading}>Planned versus actual by category.</Text>
-
-        <View style={styles.row}>
-          <Text style={styles.rowLabel}>Groceries</Text>
-          <Text style={styles.rowValue}>$120 / $200</Text>
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.rowLabel}>Dining</Text>
-          <Text style={styles.rowValue}>$45 / $150</Text>
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.rowLabel}>Transport</Text>
-          <Text style={styles.rowValue}>$60 / $80</Text>
-        </View>
+        <LedgerHeader />
+        <MonthlyBurnCard />
+        <SpendingVelocityCard />
+        <CategoryPickerCard />
+        <CategorySummarySection />
       </ScrollView>
     </SafeAreaView>
   );
