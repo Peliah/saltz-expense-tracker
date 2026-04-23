@@ -115,6 +115,7 @@ export function AllocationsSection({ onPressViewAll }: AllocationsSectionProps) 
       </View>
       <ScrollView
         horizontal
+        nestedScrollEnabled
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.allocationsScrollContent}
         decelerationRate="fast"

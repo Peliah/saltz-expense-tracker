@@ -1,6 +1,7 @@
 import { AllocationsSection } from '@/components/overview/allocations-section';
 import { LedgerHeader } from '@/components/overview/ledger-header';
 import { LiquidWealthSummaryCard } from '@/components/overview/liquid-wealth-summary-card';
+import { SpendingTrendCard } from '@/components/overview/spending-trend-card';
 import { overviewStyles as styles } from '@/stylesheets/overview-stylesheet';
 import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -8,10 +9,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function OverviewScreen() {
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        nestedScrollEnabled
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator
+      >
         <LedgerHeader />
         <LiquidWealthSummaryCard />
         <AllocationsSection />
+        <SpendingTrendCard />
         <View style={styles.card}>
           <Text style={styles.cardTitle}>This week</Text>
           <Text style={styles.cardBody}>
