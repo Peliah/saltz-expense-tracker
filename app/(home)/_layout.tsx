@@ -1,0 +1,12 @@
+import { TransactionDraftProvider } from '@/hooks/use-transaction-draft';
+import { Stack } from 'expo-router';
+
+export default function HomeLayout() {
+  return (
+    <TransactionDraftProvider>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="add-transaction" />
+      </Stack>
+    </TransactionDraftProvider>
+  );
+}
