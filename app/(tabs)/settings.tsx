@@ -44,7 +44,7 @@ export default function SettingsScreen() {
           }}
         />
         <SettingsGroupsSection
-          onPressUserPassword={() => Alert.alert('User Password', 'Open password update flow.')}
+          onPressUserPassword={() => router.push('/(tabs)/change-password')}
           onPressCurrency={() => Alert.alert('Currency', 'Open currency selector.')}
           onPressLanguage={() => Alert.alert('Language', 'Open language selector.')}
           onPressHelpCenter={() => Alert.alert('Help Center', 'Opening FAQs and support.')}
