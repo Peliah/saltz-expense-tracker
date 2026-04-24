@@ -5,10 +5,13 @@ import { QuickActionFab } from '@/components/overview/quick-action-fab';
 import { RecentLedgerSection } from '@/components/overview/recent-ledger-section';
 import { SpendingTrendCard } from '@/components/overview/spending-trend-card';
 import { overviewStyles as styles } from '@/stylesheets/overview-stylesheet';
-import { ScrollView, Text, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function OverviewScreen() {
+  const router = useRouter();
+
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
       <View style={styles.overviewInner}>
@@ -22,15 +25,15 @@ export default function OverviewScreen() {
           <LiquidWealthSummaryCard />
           <AllocationsSection />
           <SpendingTrendCard />
-          <RecentLedgerSection />
+          <RecentLedgerSection onPressViewAll={() => router.push('/(home)/recent-ledgers')} />
 
-          <View style={styles.card}>
+          {/* <View style={styles.card}>
             <Text style={styles.cardTitle}>This week</Text>
             <Text style={styles.cardBody}>
               Connect your bank or add expenses manually to populate this screen. The layout and typography follow your
               Manrope system styles.
             </Text>
-          </View>
+          </View> */}
         </ScrollView>
         <QuickActionFab />
       </View>

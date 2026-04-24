@@ -6,6 +6,7 @@ export default function HomeLayout() {
     <TransactionDraftProvider>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="add-transaction" />
+        <Stack.Screen name="recent-ledgers" />
       </Stack>
     </TransactionDraftProvider>
   );

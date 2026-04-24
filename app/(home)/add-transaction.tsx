@@ -1,26 +1,23 @@
+import { TransactionAmountCard } from '@/components/home/transaction-amount-card';
+import { TransactionDetailsCard } from '@/components/home/transaction-details-card';
+import { HomeTopHeader } from '@/components/home/home-top-header';
+import { TransactionModeToggle, type TransactionMode } from '@/components/home/transaction-mode-toggle';
+import { TransactionNotesCard } from '@/components/home/transaction-notes-card';
 import { useTransactionDraft } from '@/hooks/use-transaction-draft';
 import { fabsStyles as styles } from '@/stylesheets/fabs-stylesheet';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Alert, Animated, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { Animated, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-type Mode = 'manual' | 'capture' | 'upload';
-
-const MODES: { id: Mode; label: string }[] = [
+const MODES: { id: TransactionMode; label: string }[] = [
   { id: 'manual', label: 'Manual' },
   { id: 'capture', label: 'Capture' },
   { id: 'upload', label: 'Upload Data' },
 ];
 
 const ALLOCATIONS = ['Dinner Out', 'Groceries', 'Water Refill', 'Fruits', 'Soups'];
-const KEYS = [
-  ['1', '2', '3'],
-  ['4', '5', '6'],
-  ['7', '8', '9'],
-  ['.', '0', '⌫'],
-];
 
 export default function AddTransactionScreen() {
   const router = useRouter();
@@ -73,37 +70,16 @@ export default function AddTransactionScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 16 : 0}
       >
-        <View style={styles.header}>
-          <Pressable style={styles.backButton} onPress={() => router.back()}>
-            <MaterialIcons name="arrow-back-ios-new" size={14} color="#00327D" />
-          </Pressable>
-          <Text style={styles.title}>Add Transaction</Text>
-        </View>
+        <HomeTopHeader title="Add Transaction" />
 
-        <View
-          style={styles.modeToggle}
-          onLayout={(event) => {
-            setToggleWidth(event.nativeEvent.layout.width);
-          }}
-        >
-          {tabWidth ? (
-            <Animated.View
-              pointerEvents="none"
-              style={[
-                styles.modeIndicator,
-                {
-                  width: tabWidth,
-                  transform: [{ translateX: indicatorX }],
-                },
-              ]}
-            />
-          ) : null}
-          {MODES.map((item) => (
-            <Pressable key={item.id} onPress={() => setMode(item.id)} style={styles.modeButton}>
-              <Text style={[styles.modeText, mode === item.id && styles.modeTextActive]}>{item.label}</Text>
-            </Pressable>
-          ))}
-        </View>
+        <TransactionModeToggle
+          modes={MODES}
+          activeMode={mode}
+          tabWidth={tabWidth}
+          indicatorX={indicatorX}
+          onSelectMode={setMode}
+          onLayout={setToggleWidth}
+        />
 
         <ScrollView
           style={{ flex: 1 }}
@@ -132,72 +108,27 @@ export default function AddTransactionScreen() {
                 </View>
               ) : null}
 
-              <View style={styles.card}>
-                <Text style={styles.label}>Add Transaction</Text>
-                <TextInput
-                  style={styles.input}
-                  value={transactionName}
-                  onChangeText={setTransactionName}
-                  placeholder="John Doe"
-                  placeholderTextColor="#C4C6CF"
-                />
-                <Text style={styles.label}>Add Transaction Date</Text>
-                <TextInput
-                  style={styles.input}
-                  value={transactionDate}
-                  onChangeText={setTransactionDate}
-                  placeholder="11/24/2023"
-                  placeholderTextColor="#C4C6CF"
-                />
-                <Text style={styles.label}>Add Allocation</Text>
-                <Pressable style={styles.input} onPress={() => setShowAllocationList((prev) => !prev)}>
-                  <Text style={{ fontFamily: 'Inter-Regular', fontSize: 16, color: '#74777F' }}>{allocation}</Text>
-                </Pressable>
-              </View>
+              <TransactionDetailsCard
+                transactionName={transactionName}
+                transactionDate={transactionDate}
+                allocation={allocation}
+                onChangeTransactionName={setTransactionName}
+                onChangeTransactionDate={setTransactionDate}
+                onToggleAllocation={() => setShowAllocationList((prev) => !prev)}
+              />
 
-              <View style={styles.amountCard}>
-                <Text style={styles.label}>Amount</Text>
-                <View style={styles.amountRow}>
-                  <Text style={styles.amountCurrency}>$</Text>
-                  <Text style={styles.amountValue}>{amount || '0.00'}</Text>
-                  <View style={styles.amountTag}>
-                    <Text style={styles.amountTagText}>USD</Text>
-                  </View>
-                </View>
-                <View style={styles.keypad}>
-                  {KEYS.map((row) => (
-                    <View key={row.join('-')} style={styles.keypadRow}>
-                      {row.map((key) => (
-                        <Pressable
-                          key={key}
-                          style={styles.key}
-                          onPress={() => {
-                            if (key === '⌫') {
-                              backspaceAmount();
-                              return;
-                            }
-                            appendAmount(key);
-                          }}
-                        >
-                          <Text style={styles.keyText}>{key}</Text>
-                        </Pressable>
-                      ))}
-                    </View>
-                  ))}
-                </View>
-              </View>
+              <TransactionAmountCard
+                amount={amount}
+                onPressKey={(key) => {
+                  if (key === '⌫') {
+                    backspaceAmount();
+                    return;
+                  }
+                  appendAmount(key);
+                }}
+              />
 
-              <View style={styles.notesCard}>
-                <Text style={styles.label}>Notes</Text>
-                <TextInput
-                  style={styles.notesInput}
-                  value={notes}
-                  onChangeText={setNotes}
-                  multiline
-                  placeholder="What was this for?"
-                  placeholderTextColor="#6B7280"
-                />
-              </View>
+              <TransactionNotesCard notes={notes} onChangeNotes={setNotes} />
             </>
           ) : (
             <View style={styles.captureCard}>
@@ -215,7 +146,7 @@ export default function AddTransactionScreen() {
           <Pressable
             style={styles.primaryAction}
             onPress={() => {
-              Alert.alert('Saved', 'Transaction flow action complete.');
+              router.push('/(home)/recent-ledgers');
             }}
           >
             <Text style={styles.primaryActionText}>Save Up!</Text>
