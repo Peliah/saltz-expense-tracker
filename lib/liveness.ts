@@ -15,7 +15,7 @@ export type LivenessChallengeState = {
   completed: boolean;
 };
 
-export const DEFAULT_LIVENESS_SEQUENCE: LivenessChallenge[] = ['blink', 'turnLeft', 'turnRight', 'smile', 'mouthOpen'];
+export const DEFAULT_LIVENESS_SEQUENCE: LivenessChallenge[] = ['blink', 'turnLeft', 'turnRight', 'smile'];
 
 const BLINK_THRESHOLD = 0.35;
 const EYE_OPEN_RESET_THRESHOLD = 0.65;
@@ -72,11 +72,17 @@ export function evaluateChallenge(
     }
     case 'turnLeft': {
       const yaw = face.headEulerAngleY ?? 0;
-      return { passed: yaw < -TURN_THRESHOLD_DEGREES };
+      return {
+        passed: yaw > TURN_THRESHOLD_DEGREES,
+        reason: 'Turn your head further left',
+      };
     }
     case 'turnRight': {
       const yaw = face.headEulerAngleY ?? 0;
-      return { passed: yaw > TURN_THRESHOLD_DEGREES };
+      return {
+        passed: yaw < -TURN_THRESHOLD_DEGREES,
+        reason: 'Turn your head further right',
+      };
     }
     case 'smile': {
       return { passed: (face.smilingProbability ?? 0) > SMILE_THRESHOLD };
@@ -89,7 +95,7 @@ export function evaluateChallenge(
       const noseBase = landmarks.noseBase;
 
       if (!bottomMouth || !leftMouth || !rightMouth || !noseBase) {
-        return { passed: false, reason: 'Keep your face centered' };
+        return { passed: false, reason: 'Open your mouth wider and face forward' };
       }
 
       const mouthWidth = distance(leftMouth, rightMouth);

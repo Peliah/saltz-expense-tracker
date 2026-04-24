@@ -16,7 +16,9 @@ import { Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SNAPSHOT_INTERVAL_MS = 900;
-const CHALLENGE_TIMEOUT_MS = 9000;
+const CHALLENGE_TIMEOUT_MS = 14000;
+const LIVENESS_LOG_PREFIX = '[liveness]';
+const CAPTURE_QUALITY = 0.8;
 
 export default function IdentityVerificationScreen() {
   const { setComplete } = useAuthSetup();
@@ -40,6 +42,15 @@ export default function IdentityVerificationScreen() {
   const [challengeStartedAt, setChallengeStartedAt] = useState(0);
   const [sequence, setSequence] = useState<LivenessChallenge[]>(DEFAULT_LIVENESS_SEQUENCE);
 
+  const logEvent = (event: string, details?: Record<string, unknown>) => {
+    const stamp = new Date().toISOString();
+    if (details) {
+      console.log(`${LIVENESS_LOG_PREFIX} ${stamp} ${event}`, details);
+      return;
+    }
+    console.log(`${LIVENESS_LOG_PREFIX} ${stamp} ${event}`);
+  };
+
   const permissionGranted = permission?.granted === true;
   const activeChallenge = sequence[challengeIndex];
   const challengeLabel = activeChallenge ? getChallengeInstruction(activeChallenge) : 'Keep still';
@@ -54,7 +65,11 @@ export default function IdentityVerificationScreen() {
 
   useEffect(() => {
     return () => {
-      stopSessionLoop();
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      processingRef.current = false;
     };
   }, []);
 
@@ -76,6 +91,7 @@ export default function IdentityVerificationScreen() {
 
   const onStartVerification = async () => {
     if (!permissionGranted || starting || isSessionActive) return;
+    logEvent('start_requested', { permissionGranted, starting, isSessionActive });
     setStarting(true);
     setFailureReason(null);
     setIsComplete(false);
@@ -83,8 +99,11 @@ export default function IdentityVerificationScreen() {
     previousFaceRef.current = null;
 
     try {
+      logEvent('detector_initialize_begin');
       await faceDetector.initialize();
+      logEvent('detector_initialize_success');
       const challengeOrder = shuffleChallenges(DEFAULT_LIVENESS_SEQUENCE);
+      logEvent('challenge_order_generated', { sequence: challengeOrder });
       setSequence(challengeOrder);
       setChallengeIndex(0);
       const startTs = Date.now();
@@ -95,8 +114,10 @@ export default function IdentityVerificationScreen() {
       challengeStartedAtRef.current = startTs;
       sequenceRef.current = challengeOrder;
       sessionActiveRef.current = true;
+      logEvent('session_started', { firstChallenge: challengeOrder[0] });
       startSessionLoop();
-    } catch {
+    } catch (error) {
+      logEvent('detector_initialize_failed', { error: toLogError(error) });
       setFailureReason('Unable to initialize face detection. Please try again.');
       setStatusText('Initialization failed');
     } finally {
@@ -106,6 +127,7 @@ export default function IdentityVerificationScreen() {
 
   function startSessionLoop() {
     stopSessionLoop();
+    logEvent('session_loop_started', { intervalMs: SNAPSHOT_INTERVAL_MS });
     intervalRef.current = setInterval(() => {
       void processFrame();
     }, SNAPSHOT_INTERVAL_MS);
@@ -115,6 +137,7 @@ export default function IdentityVerificationScreen() {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
+      logEvent('session_loop_stopped');
     }
     processingRef.current = false;
   }
@@ -131,35 +154,80 @@ export default function IdentityVerificationScreen() {
     processingRef.current = true;
 
     try {
+      logEvent('frame_capture_begin', {
+        challenge: currentChallenge,
+        challengeIndex: currentChallengeIndex,
+      });
       const photo = await cameraRef.current.takePictureAsync({
-        quality: 0.45,
-        skipProcessing: true,
+        quality: CAPTURE_QUALITY,
+        skipProcessing: false,
       });
 
-      if (!photo?.uri) return;
+      if (!photo?.uri) {
+        logEvent('frame_capture_no_uri');
+        return;
+      }
 
       const detection = await faceDetector.detectFaces(photo.uri);
-      if (!detection?.success) {
+      const detectionError = detection?.error ?? null;
+      const faceCount = detection?.faces?.length ?? 0;
+      const hasFaceData = Array.isArray(detection?.faces);
+      const detectionSucceeded = detectionError == null && hasFaceData;
+      logEvent('raw_detection', {
+        challenge: currentChallenge,
+        successFlag: detection?.success ?? null,
+        interpretedSuccess: detectionSucceeded,
+        error: detectionError,
+        faceCount,
+      });
+      if (!detectionSucceeded) {
+        logEvent('detection_unsuccessful', {
+          challenge: currentChallenge,
+          error: detectionError,
+          hasFaceData,
+        });
         setStatusText('Hold still while we scan your face');
         return;
       }
 
       if (!hasAcceptableFaceCount(detection.faces)) {
+        logEvent('face_count_rejected', {
+          challenge: currentChallenge,
+          faceCount: detection.faces.length,
+        });
         setStatusText('Make sure only one face is in frame');
         return;
       }
 
       const now = Date.now();
       if (now - challengeStartedAtRef.current > CHALLENGE_TIMEOUT_MS) {
+        logEvent('challenge_timeout', {
+          challenge: currentChallenge,
+          elapsedMs: now - challengeStartedAtRef.current,
+          timeoutMs: CHALLENGE_TIMEOUT_MS,
+        });
         failSession('Timed out. Please restart verification.');
         return;
       }
 
       const face = getSingleFace(detection.faces);
-      if (!face) return;
+      if (!face) {
+        logEvent('no_single_face_after_filter');
+        return;
+      }
 
       const evaluation = evaluateChallenge(currentChallenge, face, previousFaceRef.current);
       if (!evaluation.passed) {
+        logEvent('challenge_not_passed', {
+          challenge: currentChallenge,
+          reason: evaluation.reason ?? null,
+          metrics: {
+            yaw: face.headEulerAngleY ?? null,
+            smile: face.smilingProbability ?? null,
+            leftEyeOpen: face.leftEyeOpenProbability ?? null,
+            rightEyeOpen: face.rightEyeOpenProbability ?? null,
+          },
+        });
         setStatusText(evaluation.reason ?? getChallengeInstruction(currentChallenge));
         previousFaceRef.current = face;
         return;
@@ -167,6 +235,11 @@ export default function IdentityVerificationScreen() {
 
       previousFaceRef.current = face;
       const nextIndex = currentChallengeIndex + 1;
+      logEvent('challenge_passed', {
+        challenge: currentChallenge,
+        completedStep: currentChallengeIndex + 1,
+        totalSteps: currentSequence.length,
+      });
 
       if (nextIndex >= currentSequence.length) {
         await completeSession();
@@ -177,8 +250,13 @@ export default function IdentityVerificationScreen() {
       setChallengeStartedAt(now);
       challengeIndexRef.current = nextIndex;
       challengeStartedAtRef.current = now;
+      logEvent('challenge_advanced', {
+        nextChallenge: currentSequence[nextIndex],
+        nextIndex,
+      });
       setStatusText(getChallengeInstruction(currentSequence[nextIndex]));
-    } catch {
+    } catch (error) {
+      logEvent('process_frame_failed', { error: toLogError(error) });
       failSession('Could not process camera frame. Please retry.');
     } finally {
       processingRef.current = false;
@@ -191,6 +269,7 @@ export default function IdentityVerificationScreen() {
     sessionActiveRef.current = false;
     setIsComplete(true);
     setStatusText('Verification complete');
+    logEvent('session_complete');
     await setComplete(true);
     router.push('/(auth)/new-password');
   }
@@ -202,6 +281,7 @@ export default function IdentityVerificationScreen() {
     setFailureReason(reason);
     setStatusText('Verification failed');
     previousFaceRef.current = null;
+    logEvent('session_failed', { reason });
   }
 
   const buttonLabel = starting ? 'Preparing...' : isSessionActive ? 'Verifying...' : 'Start Verification';
@@ -304,4 +384,9 @@ function shuffleChallenges(challenges: readonly LivenessChallenge[]): LivenessCh
 
 function getSingleFace(faces: readonly RNMLKitFace[]): RNMLKitFace | null {
   return faces[0] ?? null;
+}
+
+function toLogError(error: unknown): string {
+  if (error instanceof Error) return `${error.name}: ${error.message}`;
+  return String(error);
 }
