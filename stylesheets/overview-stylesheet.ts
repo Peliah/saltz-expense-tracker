@@ -431,7 +431,7 @@ export const overviewStyles = StyleSheet.create({
   quickFabRoot: {
     ...StyleSheet.absoluteFillObject,
     zIndex: 20,
-    elevation: 20,
+    elevation: 40,
   },
   quickFabBackdrop: {
     ...StyleSheet.absoluteFillObject,

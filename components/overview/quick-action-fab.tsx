@@ -57,7 +57,7 @@ export function QuickActionFab({ options = DEFAULT_OPTIONS }: QuickActionFabProp
   const [backdrop, setBackdrop] = useState(false);
 
   const rightOffset = 16;
-  const bottomOffset = insets.bottom - 16;
+  const bottomOffset = insets.bottom + 16;
 
   const close = useCallback(() => {
     progress.value = withTiming(0, { duration: 260 }, (finished) => {
