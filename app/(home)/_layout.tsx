@@ -7,6 +7,7 @@ export default function HomeLayout() {
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="add-transaction" />
         <Stack.Screen name="add-allocation" />
+        <Stack.Screen name="allocation-ledger" />
         <Stack.Screen name="allocations" />
         <Stack.Screen name="recent-ledgers" />
       </Stack>

@@ -6,7 +6,7 @@ import { NewAllocationCard } from '@/components/home/new-allocation-card';
 import { allocationStyles as styles } from '@/stylesheets/allocation-stylesheet';
 import { useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { Alert, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function AllocationsScreen() {
@@ -30,14 +30,17 @@ export default function AllocationsScreen() {
               key={item.id}
               item={item}
               onPress={() => {
-                Alert.alert(item.title, `Budget: $${item.budget.toLocaleString('en-US')}`);
+                router.push({
+                  pathname: '/(home)/allocation-ledger',
+                  params: { allocationId: item.id, allocationName: item.title },
+                });
               }}
             />
           ))}
 
           <NewAllocationCard
             onPressQuickAdd={() => {
-              router.push('/(home)/add-allocation');
+              router.push('/(home)/add-transaction');
             }}
           />
         </ScrollView>
