@@ -20,7 +20,7 @@ export type AllocationItem = {
   fillType: 'solid' | 'gradient';
   fillColor?: string;
   fillGradient?: [string, string];
-  filters: AllocationFilter[];
+  filters?: AllocationFilter[];
 };
 
 export const ALLOCATION_FILTERS: AllocationFilter[] = ['All', 'Food', 'Travel', 'Shop', 'Home'];
@@ -49,11 +49,11 @@ export const ALLOCATIONS: AllocationItem[] = [
     usedPercent: 49,
     leftAmount: 430,
     icon: 'restaurant',
-    iconColor: '#4EDEA3',
+    iconColor: '#2B6DCB',
     iconBgColor: 'rgba(0, 63, 41, 0.05)',
     status: 'healthy',
     fillType: 'gradient',
-    fillGradient: ['#003F29', '#4EDEA3'],
+    fillGradient: ['#00327D', '#2B6DCB'],
     filters: ['All', 'Food'],
   },
   {

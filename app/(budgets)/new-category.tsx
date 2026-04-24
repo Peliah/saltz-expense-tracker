@@ -1,7 +1,9 @@
 import { HomeTopHeader } from '@/components/home/home-top-header';
 import { TransactionKeypad } from '@/components/home/transaction-keypad';
+import { useCategories } from '@/hooks/use-categories';
 import { newCategoryStyles as styles } from '@/stylesheets/new-category-stylesheet';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -14,6 +16,8 @@ function normalizeAmount(value: string) {
 }
 
 export default function NewCategoryScreen() {
+  const router = useRouter();
+  const { create } = useCategories();
   const [categoryName, setCategoryName] = useState('');
   const [notes, setNotes] = useState('');
   const [amount, setAmount] = useState('');
@@ -84,8 +88,19 @@ export default function NewCategoryScreen() {
         <View style={styles.actionBar}>
           <Pressable
             style={styles.primaryButton}
-            onPress={() => {
-              Alert.alert('Saved', 'New category saved.');
+            onPress={async () => {
+              if (!categoryName.trim()) {
+                Alert.alert('Missing name', 'Please enter a category name.');
+                return;
+              }
+              await create({
+                id: `cat-${Date.now()}`,
+                name: categoryName.trim(),
+                icon: 'apps',
+                color: '#00327D',
+                createdAt: new Date().toISOString(),
+              });
+              Alert.alert('Saved', 'New category saved.', [{ text: 'OK', onPress: () => router.replace('/(budgets)/categories') }]);
             }}
           >
             <Text style={styles.primaryButtonText}>Save Up!</Text>

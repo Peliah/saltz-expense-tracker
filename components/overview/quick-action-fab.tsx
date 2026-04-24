@@ -28,8 +28,8 @@ export type QuickActionOption = {
 };
 
 const DEFAULT_OPTIONS: QuickActionOption[] = [
-  { id: 'manual', label: 'Manual', icon: 'receipt-long' },
-  { id: 'capture', label: 'Capture', icon: 'document-scanner' },
+  { id: 'deposit', label: 'Deposit', icon: 'south-west' },
+  { id: 'withdraw', label: 'Withdraw', icon: 'north-east' },
   { id: 'upload', label: 'Upload Data', icon: 'upload-file' },
 ];
 
@@ -118,10 +118,10 @@ export function QuickActionFab({ options = DEFAULT_OPTIONS }: QuickActionFabProp
               onPress={() => {
                 if (opt.onPress) {
                   opt.onPress();
-                } else if (opt.id === 'manual') {
-                  router.push('/(home)/add-transaction?tab=manual');
-                } else if (opt.id === 'capture') {
-                  router.push('/(home)/add-transaction?tab=capture');
+                } else if (opt.id === 'deposit') {
+                  router.push('/(home)/add-transaction?tab=manual&type=deposit');
+                } else if (opt.id === 'withdraw') {
+                  router.push('/(home)/add-transaction?tab=manual&type=withdraw');
                 } else if (opt.id === 'upload') {
                   router.push('/(home)/add-transaction?tab=upload');
                 }

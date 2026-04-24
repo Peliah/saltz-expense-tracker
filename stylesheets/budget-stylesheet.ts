@@ -31,7 +31,7 @@ export const budgetStyles = StyleSheet.create({
     gap: 2,
   },
   monthlyBurnLabel: {
-    fontFamily: 'Inter-SemiBold',
+    fontFamily: 'Manrope-SemiBold',
     fontSize: 10,
     lineHeight: 14,
     letterSpacing: 1.2,
@@ -54,7 +54,7 @@ export const budgetStyles = StyleSheet.create({
     borderColor: 'rgba(78, 222, 163, 0.3)',
   },
   monthlyBurnStatusText: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 9,
     lineHeight: 13,
     letterSpacing: 0.4,
@@ -80,7 +80,7 @@ export const budgetStyles = StyleSheet.create({
     alignItems: 'center',
   },
   monthlyBurnMeta: {
-    fontFamily: 'Inter-Medium',
+    fontFamily: 'Manrope-Medium',
     fontSize: 11,
     lineHeight: 15,
     color: '#E0E3E5',
@@ -109,7 +109,7 @@ export const budgetStyles = StyleSheet.create({
     color: '#191C1E',
   },
   velocitySubtitle: {
-    fontFamily: 'Inter-Medium',
+    fontFamily: 'Manrope-Medium',
     fontSize: 14,
     lineHeight: 20,
     color: '#4A4E5C',
@@ -124,10 +124,10 @@ export const budgetStyles = StyleSheet.create({
     gap: 6,
   },
   velocityPillValue: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 16,
     lineHeight: 22,
-    color: '#06563A',
+    color: '#00327D',
   },
   velocityChartWrap: {
     borderRadius: 20,
@@ -143,7 +143,7 @@ export const budgetStyles = StyleSheet.create({
     paddingHorizontal: 6,
   },
   velocityBarLabel: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 12,
     lineHeight: 16,
     letterSpacing: 0.8,
@@ -165,7 +165,7 @@ export const budgetStyles = StyleSheet.create({
     flexShrink: 1,
   },
   velocityRemainingLabel: {
-    fontFamily: 'Inter-Medium',
+    fontFamily: 'Manrope-Medium',
     fontSize: 16,
     lineHeight: 22,
     color: '#191C1E',
@@ -174,7 +174,7 @@ export const budgetStyles = StyleSheet.create({
     fontFamily: 'Manrope-ExtraBold',
     fontSize: 16,
     lineHeight: 30,
-    color: '#06563A',
+    color: '#00327D',
   },
   categorySection: {
     paddingVertical: 8,
@@ -194,7 +194,7 @@ export const budgetStyles = StyleSheet.create({
     gap: 24,
   },
   categoryLabel: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 12,
     lineHeight: 16,
     letterSpacing: 1.2,
@@ -232,11 +232,11 @@ export const budgetStyles = StyleSheet.create({
     textAlign: 'center',
   },
   categoryTileTextActive: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     color: '#00327D',
   },
   categoryTileTextInactive: {
-    fontFamily: 'Inter-Medium',
+    fontFamily: 'Manrope-Medium',
     color: '#434653',
   },
   addCategoryButtonOuter: {
@@ -286,7 +286,7 @@ export const budgetStyles = StyleSheet.create({
     alignItems: 'center',
   },
   categorySummaryViewAllText: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 12,
     lineHeight: 16,
     letterSpacing: 1.2,
@@ -347,7 +347,7 @@ export const budgetStyles = StyleSheet.create({
     color: '#00327D',
   },
   categorySummaryLeft: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 10,
     lineHeight: 15,
     textTransform: 'uppercase',

@@ -1,12 +1,14 @@
 import { overviewStyles as styles } from '@/stylesheets/overview-stylesheet';
 import { Pressable, Text, View } from 'react-native';
 import { RecentLedgerList } from './recent-ledger-list';
+import type { RecentLedgerEntry } from './recent-ledger-row';
 
 type RecentLedgerSectionProps = {
   onPressViewAll?: () => void;
+  entries?: RecentLedgerEntry[];
 };
 
-export function RecentLedgerSection({ onPressViewAll }: RecentLedgerSectionProps) {
+export function RecentLedgerSection({ onPressViewAll, entries }: RecentLedgerSectionProps) {
   return (
     <View style={styles.recentLedgerSection}>
       <View style={styles.recentLedgerHeaderRow}>
@@ -15,7 +17,7 @@ export function RecentLedgerSection({ onPressViewAll }: RecentLedgerSectionProps
           <Text style={styles.recentLedgerViewAll}>VIEW ALL</Text>
         </Pressable>
       </View>
-      <RecentLedgerList />
+      <RecentLedgerList entries={entries} />
     </View>
   );
 }

@@ -1,12 +1,11 @@
-import type { AllocationFilter } from '@/components/home/allocation-types';
 import { allocationStyles as styles } from '@/stylesheets/allocation-stylesheet';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 
 type AllocationFilterTabsProps = {
-  filters: AllocationFilter[];
-  activeFilter: AllocationFilter;
-  onChangeFilter: (next: AllocationFilter) => void;
+  filters: string[];
+  activeFilter: string;
+  onChangeFilter: (next: string) => void;
 };
 
 export function AllocationFilterTabs({ filters, activeFilter, onChangeFilter }: AllocationFilterTabsProps) {

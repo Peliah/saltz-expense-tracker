@@ -36,7 +36,7 @@ export function SpendingVelocityCard({
           <Text style={styles.velocitySubtitle}>{subtitle}</Text>
         </View>
         <View style={styles.velocityPill}>
-          <MaterialIcons name="trending-down" size={20} color="#06563A" />
+          <MaterialIcons name="trending-down" size={20} color="#00327D" />
           <Text style={styles.velocityPillValue}>{trendValue}</Text>
         </View>
       </View>
@@ -45,7 +45,7 @@ export function SpendingVelocityCard({
 
       <View style={styles.velocityRemainingRow}>
         <View style={styles.velocityRemainingLeft}>
-          <MaterialIcons name="pie-chart-outline" size={36} color="#06563A" />
+          <MaterialIcons name="pie-chart-outline" size={36} color="#00327D" />
           <Text style={styles.velocityRemainingLabel}>{remainingLabel}</Text>
         </View>
         <Text style={styles.velocityRemainingValue}>{remainingValue}</Text>

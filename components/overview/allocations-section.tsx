@@ -82,6 +82,7 @@ const CATEGORIES: AllocationCategory[] = [
 
 type AllocationsSectionProps = {
   onPressViewAll?: () => void;
+  items?: AllocationCategory[];
 };
 
 function AllocationCard({ item, isLast }: { item: AllocationCategory; isLast: boolean }) {
@@ -104,7 +105,7 @@ function AllocationCard({ item, isLast }: { item: AllocationCategory; isLast: bo
   );
 }
 
-export function AllocationsSection({ onPressViewAll }: AllocationsSectionProps) {
+export function AllocationsSection({ onPressViewAll, items = CATEGORIES }: AllocationsSectionProps) {
   return (
     <View style={styles.allocationsSection}>
       <View style={styles.allocationsHeaderRow}>
@@ -120,8 +121,8 @@ export function AllocationsSection({ onPressViewAll }: AllocationsSectionProps) 
         contentContainerStyle={styles.allocationsScrollContent}
         decelerationRate="fast"
       >
-        {CATEGORIES.map((item, index) => (
-          <AllocationCard key={item.id} item={item} isLast={index === CATEGORIES.length - 1} />
+        {items.map((item, index) => (
+          <AllocationCard key={item.id} item={item} isLast={index === items.length - 1} />
         ))}
       </ScrollView>
     </View>

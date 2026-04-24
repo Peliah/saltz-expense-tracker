@@ -18,7 +18,7 @@ export const RECENT_LEDGER_ENTRIES: RecentLedgerEntry[] = [
     meta: 'INVESTMENT • 11:20 AM',
     dateLabel: 'OCT 11',
     icon: 'trending-up',
-    iconColor: '#4EDEA3',
+    iconColor: '#2B6DCB',
     amountTone: 'credit',
   },
   {
@@ -78,7 +78,7 @@ export const RECENT_LEDGER_ENTRIES: RecentLedgerEntry[] = [
     meta: 'ENTERTAINMENT • 12:15 PM',
     dateLabel: 'OCT 5',
     icon: 'menu-book',
-    iconColor: '#4EDEA3',
+    iconColor: '#2B6DCB',
     amountTone: 'credit',
   },
 ];

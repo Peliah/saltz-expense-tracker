@@ -180,7 +180,7 @@ export const allocationStyles = StyleSheet.create({
     color: '#191C1E',
   },
   newCardSubtitle: {
-    fontFamily: 'Inter-Regular',
+    fontFamily: 'Manrope-Regular',
     fontSize: 14,
     lineHeight: 20,
     color: '#586377',

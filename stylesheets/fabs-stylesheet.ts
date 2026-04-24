@@ -87,7 +87,7 @@ export const fabsStyles = StyleSheet.create({
     gap: 16,
   },
   label: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 12,
     letterSpacing: 1.2,
     textTransform: 'uppercase',
@@ -98,7 +98,7 @@ export const fabsStyles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: '#F2F4F6',
     paddingHorizontal: 12,
-    fontFamily: 'Inter-Regular',
+    fontFamily: 'Manrope-Regular',
     fontSize: 16,
     color: '#1F2937',
   },
@@ -133,7 +133,7 @@ export const fabsStyles = StyleSheet.create({
     paddingVertical: 6,
   },
   amountTagText: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 12,
     color: '#FFFFFF',
     letterSpacing: 1.2,
@@ -167,7 +167,7 @@ export const fabsStyles = StyleSheet.create({
   },
   notesInput: {
     minHeight: 80,
-    fontFamily: 'Inter-Regular',
+    fontFamily: 'Manrope-Regular',
     fontSize: 16,
     color: '#6B7280',
   },
@@ -228,7 +228,7 @@ export const fabsStyles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   allocationItemText: {
-    fontFamily: 'Inter-Regular',
+    fontFamily: 'Manrope-Regular',
     fontSize: 16,
     color: '#74777F',
   },

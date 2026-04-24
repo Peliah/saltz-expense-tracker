@@ -23,10 +23,12 @@ const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 const GAP_FACTOR = 0.985;
 
 type AllocationGraphSectionProps = {
+  items?: AllocationItem[];
+  totalLabel?: string;
   onPressViewAll?: () => void;
 };
 
-export function AllocationGraphSection({ onPressViewAll }: AllocationGraphSectionProps) {
+export function AllocationGraphSection({ items = ALLOCATION_DATA, totalLabel = '$14.2k', onPressViewAll }: AllocationGraphSectionProps) {
   let offset = 0;
 
   return (
@@ -42,7 +44,7 @@ export function AllocationGraphSection({ onPressViewAll }: AllocationGraphSectio
         <View style={styles.allocationDonutWrap}>
           <Svg width={SIZE} height={SIZE} viewBox={`0 0 ${SIZE} ${SIZE}`} pointerEvents="none">
             <G transform={`rotate(-90 ${SIZE / 2} ${SIZE / 2})`}>
-              {ALLOCATION_DATA.map((item) => {
+              {items.map((item) => {
                 const fullArc = (item.percent / 100) * CIRCUMFERENCE;
                 const arc = fullArc * GAP_FACTOR;
                 const segment = (
@@ -67,12 +69,12 @@ export function AllocationGraphSection({ onPressViewAll }: AllocationGraphSectio
 
           <View style={styles.allocationDonutCenter}>
             <Text style={styles.allocationTotalLabel}>Total</Text>
-            <Text style={styles.allocationTotalValue}>$14.2k</Text>
+            <Text style={styles.allocationTotalValue}>{totalLabel}</Text>
           </View>
         </View>
 
         <View style={styles.allocationLegend}>
-          {ALLOCATION_DATA.map((item) => (
+          {items.map((item) => (
             <View key={item.id} style={styles.allocationLegendRow}>
               <View style={styles.allocationLegendLeft}>
                 <View style={[styles.allocationLegendDot, { backgroundColor: item.color }]} />

@@ -1,13 +1,21 @@
 import { CategoryPickerCard } from '@/components/budget/category-picker-card';
 import { HomeTopHeader } from '@/components/home/home-top-header';
 import { NewAllocationCard } from '@/components/home/new-allocation-card';
+import { useCategories } from '@/hooks/use-categories';
 import { budgetStyles as styles } from '@/stylesheets/budget-stylesheet';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from 'expo-router';
-import { Alert, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function BudgetCategoriesScreen() {
   const router = useRouter();
+  const { categories } = useCategories();
+  const categoryTiles = categories.map((category) => ({
+    id: category.id,
+    label: category.name,
+    icon: category.icon as React.ComponentProps<typeof MaterialIcons>['name'],
+  }));
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
@@ -15,12 +23,12 @@ export default function BudgetCategoriesScreen() {
         <HomeTopHeader title="Categories" />
         <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
           <CategoryPickerCard
+            categories={[...categoryTiles, { id: 'new', label: 'New', icon: 'add' }]}
             onSelectCategory={(categoryId) => {
               if (categoryId === 'new') {
                 router.push('/(budgets)/new-category');
                 return;
               }
-              Alert.alert('Category selected', `Active category: ${categoryId}`);
             }}
             onPressAddCategory={() => {
               router.push('/(budgets)/new-category');

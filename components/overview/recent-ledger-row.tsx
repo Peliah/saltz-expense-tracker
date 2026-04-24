@@ -10,7 +10,7 @@ export type RecentLedgerEntry = {
   meta: string;
   dateLabel: string;
   icon: ComponentProps<typeof MaterialIcons>['name'];
-  iconColor: '#00327D' | '#4EDEA3';
+  iconColor: '#00327D' | '#2B6DCB';
   amountTone: 'debit' | 'credit';
 };
 

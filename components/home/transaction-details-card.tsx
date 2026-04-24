@@ -38,7 +38,7 @@ export function TransactionDetailsCard({
       />
       <Text style={styles.label}>Add Allocation</Text>
       <Pressable style={styles.input} onPress={onToggleAllocation}>
-        <Text style={{ fontFamily: 'Inter-Regular', fontSize: 16, color: '#74777F' }}>{allocation}</Text>
+        <Text style={{ fontFamily: 'Manrope-Regular', fontSize: 16, color: '#74777F' }}>{allocation}</Text>
       </Pressable>
     </View>
   );

@@ -18,7 +18,7 @@ export const insightsStyles = StyleSheet.create({
     gap: 4,
   },
   financialInsightsEyebrow: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 11,
     lineHeight: 16,
     letterSpacing: 0.55,
@@ -57,7 +57,7 @@ export const insightsStyles = StyleSheet.create({
     elevation: 1,
   },
   financialInsightsTabText: {
-    fontFamily: 'Inter-SemiBold',
+    fontFamily: 'Manrope-SemiBold',
     fontSize: 14,
     lineHeight: 20,
     color: '#545F73',
@@ -73,7 +73,7 @@ export const insightsStyles = StyleSheet.create({
     gap: 16,
   },
   monthlyOverviewEyebrow: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 12,
     lineHeight: 16,
     letterSpacing: 1.2,
@@ -88,7 +88,7 @@ export const insightsStyles = StyleSheet.create({
     color: '#191C1E',
   },
   monthlyOverviewBody: {
-    fontFamily: 'Inter-Regular',
+    fontFamily: 'Manrope-Regular',
     fontSize: 16,
     lineHeight: 26,
     color: '#434653',
@@ -111,7 +111,7 @@ export const insightsStyles = StyleSheet.create({
     gap: 0,
   },
   monthlyOverviewSpentLabel: {
-    fontFamily: 'Inter-Regular',
+    fontFamily: 'Manrope-Regular',
     fontSize: 14,
     lineHeight: 20,
     color: '#545F73',
@@ -133,7 +133,7 @@ export const insightsStyles = StyleSheet.create({
     height: '100%',
   },
   monthlyOverviewMeta: {
-    fontFamily: 'Inter-Regular',
+    fontFamily: 'Manrope-Regular',
     fontSize: 12,
     lineHeight: 16,
     color: '#434653',
@@ -163,7 +163,7 @@ export const insightsStyles = StyleSheet.create({
     color: '#191C1E',
   },
   allocationViewAll: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 14,
     lineHeight: 20,
     color: '#00327D',
@@ -185,7 +185,7 @@ export const insightsStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   allocationTotalLabel: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 8,
     lineHeight: 11,
     letterSpacing: 0.8,
@@ -193,7 +193,7 @@ export const insightsStyles = StyleSheet.create({
     color: '#737784',
   },
   allocationTotalValue: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 16,
     lineHeight: 21,
     color: '#00327D',
@@ -220,14 +220,14 @@ export const insightsStyles = StyleSheet.create({
     borderRadius: 9999,
   },
   allocationLegendLabel: {
-    fontFamily: 'Inter-SemiBold',
+    fontFamily: 'Manrope-SemiBold',
     fontSize: 10,
     lineHeight: 20,
     color: '#191C1E',
     minWidth: 90,
   },
   allocationLegendValue: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 10,
     lineHeight: 20,
     color: '#191C1E',
@@ -250,7 +250,7 @@ export const insightsStyles = StyleSheet.create({
     color: '#191C1E',
   },
   smartSuggestionsViewAll: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 14,
     lineHeight: 20,
     color: '#00327D',
@@ -288,7 +288,7 @@ export const insightsStyles = StyleSheet.create({
   },
   smartSuggestionHeading: {
     flex: 1,
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 14,
     lineHeight: 20,
     color: '#191C1E',
@@ -305,7 +305,7 @@ export const insightsStyles = StyleSheet.create({
     backgroundColor: 'rgba(0, 71, 171, 0.1)',
   },
   smartSuggestionTagText: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 10,
     lineHeight: 15,
     textTransform: 'uppercase',
@@ -317,7 +317,7 @@ export const insightsStyles = StyleSheet.create({
     color: '#00327D',
   },
   smartSuggestionBody: {
-    fontFamily: 'Inter-Medium',
+    fontFamily: 'Manrope-Medium',
     fontSize: 12,
     lineHeight: 20,
     color: '#434653',
@@ -330,7 +330,7 @@ export const insightsStyles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   smartSuggestionActionText: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 12,
     lineHeight: 16,
     color: '#00327D',
@@ -352,13 +352,13 @@ export const insightsStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   smartGoalPercent: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 24,
     lineHeight: 32,
     color: '#FFFFFF',
   },
   smartGoalLabel: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 10,
     lineHeight: 15,
     letterSpacing: 1,
@@ -376,7 +376,7 @@ export const insightsStyles = StyleSheet.create({
     color: '#FFFFFF',
   },
   smartGoalBody: {
-    fontFamily: 'Inter-Regular',
+    fontFamily: 'Manrope-Regular',
     fontSize: 14,
     lineHeight: 23,
     color: '#A5BDFF',

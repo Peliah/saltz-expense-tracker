@@ -3,12 +3,16 @@ import { TransactionDetailsCard } from '@/components/home/transaction-details-ca
 import { HomeTopHeader } from '@/components/home/home-top-header';
 import { TransactionModeToggle, type TransactionMode } from '@/components/home/transaction-mode-toggle';
 import { TransactionNotesCard } from '@/components/home/transaction-notes-card';
+import { useCategories } from '@/hooks/use-categories';
+import { useSecuritySettings } from '@/hooks/use-security-settings';
 import { useTransactionDraft } from '@/hooks/use-transaction-draft';
+import { useTransactions } from '@/hooks/use-transactions';
+import type { TransactionType } from '@/lib/types/domain';
 import { fabsStyles as styles } from '@/stylesheets/fabs-stylesheet';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Animated, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from 'react-native';
+import { Alert, Animated, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const MODES: { id: TransactionMode; label: string }[] = [
@@ -17,11 +21,12 @@ const MODES: { id: TransactionMode; label: string }[] = [
   { id: 'upload', label: 'Upload Data' },
 ];
 
-const ALLOCATIONS = ['Dinner Out', 'Groceries', 'Water Refill', 'Fruits', 'Soups'];
-
 export default function AddTransactionScreen() {
   const router = useRouter();
-  const params = useLocalSearchParams<{ tab?: string }>();
+  const params = useLocalSearchParams<{ tab?: string; type?: string }>();
+  const { categories } = useCategories();
+  const { settings } = useSecuritySettings();
+  const { create } = useTransactions();
   const {
     transactionName,
     transactionDate,
@@ -34,8 +39,11 @@ export default function AddTransactionScreen() {
     setAllocation,
     setNotes,
     setMode,
+    transactionType,
+    setTransactionType,
     appendAmount,
     backspaceAmount,
+    resetDraft,
   } = useTransactionDraft();
 
   const [showAllocationList, setShowAllocationList] = useState(false);
@@ -51,6 +59,13 @@ export default function AddTransactionScreen() {
       setMode(targetMode);
     }
   }, [params.tab, setMode]);
+
+  useEffect(() => {
+    const targetType = params.type;
+    if (targetType === 'deposit' || targetType === 'withdraw') {
+      setTransactionType(targetType as TransactionType);
+    }
+  }, [params.type, setTransactionType]);
 
   useEffect(() => {
     if (!tabWidth) return;
@@ -93,16 +108,16 @@ export default function AddTransactionScreen() {
             <>
               {showAllocationList ? (
                 <View style={styles.allocationList}>
-                  {ALLOCATIONS.map((item) => (
+                  {categories.map((category) => (
                     <Pressable
-                      key={item}
+                      key={category.id}
                       style={styles.allocationItem}
                       onPress={() => {
-                        setAllocation(item);
+                        setAllocation(category.name);
                         setShowAllocationList(false);
                       }}
                     >
-                      <Text style={styles.allocationItemText}>{item}</Text>
+                      <Text style={styles.allocationItemText}>{category.name}</Text>
                     </Pressable>
                   ))}
                 </View>
@@ -143,9 +158,36 @@ export default function AddTransactionScreen() {
         </ScrollView>
 
         <View style={styles.fabBar}>
+          <View style={{ paddingBottom: 8, alignItems: 'center' }}>
+            <Text style={{ fontFamily: 'Manrope-SemiBold', color: '#00327D' }}>
+              {transactionType === 'deposit' ? 'Deposit' : 'Withdraw'}
+            </Text>
+          </View>
           <Pressable
             style={styles.primaryAction}
-            onPress={() => {
+            onPress={async () => {
+              if (!amount) {
+                Alert.alert('Missing amount', 'Please enter a valid amount.');
+                return;
+              }
+              if (transactionType === 'withdraw' && Number(amount) >= 1000 && !settings?.identityVerifiedAt) {
+                Alert.alert('Verification required', 'Please complete identity verification before large withdrawals.');
+                router.push('/(auth)/identity-verification');
+                return;
+              }
+              const category = categories.find((item) => item.name === allocation) ?? categories[0];
+              await create({
+                id: `tx-${Date.now()}`,
+                type: transactionType,
+                mode,
+                title: transactionName || 'Transaction',
+                amount: Number(amount),
+                categoryId: category?.id ?? 'other',
+                notes,
+                occurredAt: transactionDate ? new Date(transactionDate).toISOString() : new Date().toISOString(),
+                createdAt: new Date().toISOString(),
+              });
+              resetDraft();
               router.push('/(home)/recent-ledgers');
             }}
           >

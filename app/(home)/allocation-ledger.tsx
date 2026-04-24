@@ -1,30 +1,28 @@
 import { HomeTopHeader } from '@/components/home/home-top-header';
-import { RECENT_LEDGER_ENTRIES } from '@/components/overview/recent-ledger-data';
 import { RecentLedgerList } from '@/components/overview/recent-ledger-list';
+import { useAllocations } from '@/hooks/use-allocations';
+import { useCategories } from '@/hooks/use-categories';
+import { useTransactions } from '@/hooks/use-transactions';
+import { selectRecentLedgerEntries } from '@/lib/selectors/ledger-selectors';
 import { overviewStyles } from '@/stylesheets/overview-stylesheet';
 import { useLocalSearchParams } from 'expo-router';
 import { useMemo } from 'react';
 import { Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const ALLOCATION_TO_MERCHANTS: Record<string, string[]> = {
-  housing: ['Electricity Bill'],
-  'dining-out': ['The Gilded Fork'],
-  groceries: ['Amazon Purchase'],
-  tickets: ['Spotify Premium'],
-};
-
 export default function AllocationLedgerScreen() {
   const params = useLocalSearchParams<{ allocationId?: string; allocationName?: string }>();
   const allocationId = params.allocationId ?? '';
   const allocationName = params.allocationName ?? 'Allocation';
+  const { allocations } = useAllocations();
+  const { transactions } = useTransactions();
+  const { categories } = useCategories();
 
   const entries = useMemo(() => {
-    const merchants = ALLOCATION_TO_MERCHANTS[allocationId];
-    if (!merchants) return RECENT_LEDGER_ENTRIES;
-    const filtered = RECENT_LEDGER_ENTRIES.filter((entry) => merchants.includes(entry.merchant));
-    return filtered.length > 0 ? filtered : RECENT_LEDGER_ENTRIES;
-  }, [allocationId]);
+    const allocation = allocations.find((item) => item.id === allocationId);
+    if (!allocation) return [];
+    return selectRecentLedgerEntries(transactions, categories, { categoryId: allocation.categoryId });
+  }, [allocationId, allocations, transactions, categories]);
 
   return (
     <SafeAreaView style={overviewStyles.safeArea} edges={['top', 'bottom']}>

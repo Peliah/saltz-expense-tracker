@@ -119,7 +119,7 @@ export const overviewStyles = StyleSheet.create({
     fontFamily: 'Manrope-Bold',
     fontSize: 12,
     lineHeight: 16,
-    color: '#4EDEA3',
+    color: '#2B6DCB',
   },
   summaryAmountBlock: {
     gap: 4,

@@ -1,8 +1,10 @@
+import { clearSessionLinkedCache } from '@/actions/session-actions';
 import { LedgerHeader } from '@/components/overview/ledger-header';
 import { LedgerTierBento } from '@/components/settings/ledger-tier-bento';
 import { ProfileCard } from '@/components/settings/profile-card';
 import { SettingsGroupsSection } from '@/components/settings/settings-groups-section';
 import { useAuthSetup } from '@/context/auth-setup';
+import { useSecuritySettings } from '@/hooks/use-security-settings';
 import { settingsStyles as styles } from '@/stylesheets/settings-stylesheet';
 import { useRouter } from 'expo-router';
 import { Alert, ScrollView } from 'react-native';
@@ -11,6 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function SettingsScreen() {
   const router = useRouter();
   const { setComplete } = useAuthSetup();
+  const { settings, patch } = useSecuritySettings();
 
   const handleSignOut = () => {
     Alert.alert('Sign out?', 'You will be returned to the auth flow.', [
@@ -19,6 +22,7 @@ export default function SettingsScreen() {
         text: 'Sign Out',
         style: 'destructive',
         onPress: async () => {
+          await clearSessionLinkedCache();
           await setComplete(false);
           router.replace('/(auth)/create-account');
         },
@@ -44,6 +48,15 @@ export default function SettingsScreen() {
           }}
         />
         <SettingsGroupsSection
+          biometricsEnabled={settings?.biometricsEnabled ?? true}
+          passwordSubtitle={
+            settings?.passwordUpdatedAt
+              ? `Last updated ${new Date(settings.passwordUpdatedAt).toLocaleDateString('en-US')}`
+              : 'Never updated'
+          }
+          onToggleBiometrics={() => {
+            void patch({ biometricsEnabled: !(settings?.biometricsEnabled ?? true) });
+          }}
           onPressUserPassword={() => router.push('/(tabs)/change-password')}
           onPressCurrency={() => Alert.alert('Currency', 'Open currency selector.')}
           onPressLanguage={() => Alert.alert('Language', 'Open language selector.')}

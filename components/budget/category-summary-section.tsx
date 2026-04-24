@@ -2,7 +2,7 @@ import { budgetStyles as styles } from '@/stylesheets/budget-stylesheet';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Pressable, Text, View } from 'react-native';
 
-type CategorySummaryItem = {
+export type CategorySummaryItem = {
   id: string;
   name: string;
   budget: string;
@@ -27,11 +27,12 @@ const CATEGORY_SUMMARY_ITEMS: CategorySummaryItem[] = [
 ];
 
 type CategorySummarySectionProps = {
+  items?: CategorySummaryItem[];
   onPressViewAll?: () => void;
   onPressCategory?: (categoryId: string) => void;
 };
 
-export function CategorySummarySection({ onPressViewAll, onPressCategory }: CategorySummarySectionProps) {
+export function CategorySummarySection({ items = CATEGORY_SUMMARY_ITEMS, onPressViewAll, onPressCategory }: CategorySummarySectionProps) {
   return (
     <View style={styles.categorySummarySection}>
       <View style={styles.categorySummaryHeader}>
@@ -47,7 +48,7 @@ export function CategorySummarySection({ onPressViewAll, onPressCategory }: Cate
       </View>
 
       <View style={styles.categorySummaryList}>
-        {CATEGORY_SUMMARY_ITEMS.map((item) => (
+        {items.map((item) => (
           <Pressable
             key={item.id}
             accessibilityRole="button"

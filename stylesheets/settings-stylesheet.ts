@@ -45,7 +45,7 @@ export const settingsStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   avatarInitials: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 20,
     lineHeight: 24,
     color: '#FFFFFF',
@@ -57,7 +57,7 @@ export const settingsStyles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 9999,
-    backgroundColor: '#4EDEA3',
+    backgroundColor: '#2B6DCB',
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000000',
@@ -84,7 +84,7 @@ export const settingsStyles = StyleSheet.create({
     backgroundColor: 'rgba(0, 50, 125, 0.05)',
   },
   memberPillText: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 10,
     lineHeight: 15,
     letterSpacing: 0.5,
@@ -122,25 +122,25 @@ export const settingsStyles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   ledgerBentoLabelLight: {
-    fontFamily: 'Inter-SemiBold',
+    fontFamily: 'Manrope-SemiBold',
     fontSize: 12,
     lineHeight: 16,
     color: '#434653',
   },
   ledgerBentoValueLight: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 14,
     lineHeight: 20,
     color: '#191C1E',
   },
   ledgerBentoLabelDark: {
-    fontFamily: 'Inter-SemiBold',
+    fontFamily: 'Manrope-SemiBold',
     fontSize: 12,
     lineHeight: 16,
     color: '#FFFFFF',
   },
   ledgerBentoValueDark: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 14,
     lineHeight: 20,
     color: '#FFFFFF',
@@ -153,7 +153,7 @@ export const settingsStyles = StyleSheet.create({
     gap: 16,
   },
   settingsGroupHeading: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 10,
     lineHeight: 15,
     letterSpacing: 1,
@@ -196,13 +196,13 @@ export const settingsStyles = StyleSheet.create({
     gap: 0,
   },
   settingsOptionTitle: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 14,
     lineHeight: 20,
     color: '#191C1E',
   },
   settingsOptionSubtitle: {
-    fontFamily: 'Inter-Regular',
+    fontFamily: 'Manrope-Regular',
     fontSize: 12,
     lineHeight: 16,
     color: '#434653',
@@ -217,7 +217,7 @@ export const settingsStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   settingsToggleOnTrack: {
-    backgroundColor: '#4EDEA3',
+    backgroundColor: '#2B6DCB',
     alignItems: 'flex-end',
   },
   settingsToggleThumb: {
@@ -236,7 +236,7 @@ export const settingsStyles = StyleSheet.create({
     gap: 8,
   },
   signOutText: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 16,
     lineHeight: 24,
     color: '#93000A',
@@ -247,7 +247,7 @@ export const settingsStyles = StyleSheet.create({
     paddingBottom: 48,
   },
   settingsVersionText: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 10,
     lineHeight: 15,
     letterSpacing: 3,

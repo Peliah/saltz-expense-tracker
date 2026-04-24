@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useMemo, useState } from 'react';
 
 type TransactionMode = 'manual' | 'capture' | 'upload';
+type TransactionType = 'deposit' | 'withdraw';
 
 type TransactionDraftState = {
   transactionName: string;
@@ -9,6 +10,7 @@ type TransactionDraftState = {
   amount: string;
   notes: string;
   mode: TransactionMode;
+  transactionType: TransactionType;
 };
 
 type TransactionDraftContextValue = TransactionDraftState & {
@@ -18,8 +20,10 @@ type TransactionDraftContextValue = TransactionDraftState & {
   setAmount: (value: string) => void;
   setNotes: (value: string) => void;
   setMode: (value: TransactionMode) => void;
+  setTransactionType: (value: TransactionType) => void;
   appendAmount: (value: string) => void;
   backspaceAmount: () => void;
+  resetDraft: () => void;
 };
 
 const TransactionDraftContext = createContext<TransactionDraftContextValue | null>(null);
@@ -31,6 +35,7 @@ const INITIAL_STATE: TransactionDraftState = {
   amount: '',
   notes: '',
   mode: 'manual',
+  transactionType: 'withdraw',
 };
 
 export function TransactionDraftProvider({ children }: { children: React.ReactNode }) {
@@ -45,6 +50,7 @@ export function TransactionDraftProvider({ children }: { children: React.ReactNo
       setAmount: (amount) => setState((prev) => ({ ...prev, amount })),
       setNotes: (notes) => setState((prev) => ({ ...prev, notes })),
       setMode: (mode) => setState((prev) => ({ ...prev, mode })),
+      setTransactionType: (transactionType) => setState((prev) => ({ ...prev, transactionType })),
       appendAmount: (digit) =>
         setState((prev) => {
           const next = `${prev.amount}${digit}`;
@@ -55,6 +61,7 @@ export function TransactionDraftProvider({ children }: { children: React.ReactNo
           const trimmed = prev.amount.slice(0, -1);
           return { ...prev, amount: normalizeAmount(trimmed) };
         }),
+      resetDraft: () => setState(INITIAL_STATE),
     }),
     [state],
   );

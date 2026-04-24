@@ -1,3 +1,4 @@
+import { markIdentityVerified } from '@/actions/security-actions';
 import { useAuthSetup } from '@/context/auth-setup';
 import { useLivenessVerification } from '@/hooks/use-liveness-verification';
 import { identityVerificationStyles as styles } from '@/stylesheets/identity-verification-stylesheet';
@@ -28,6 +29,7 @@ export default function IdentityVerificationScreen() {
     showRetry,
   } = useLivenessVerification({
     onVerified: async () => {
+      await markIdentityVerified();
       await setComplete(true);
       router.push('/(auth)/new-password');
     },

@@ -1,10 +1,12 @@
 import { SettingsOptionRow } from '@/components/settings/settings-option-row';
 import { settingsStyles as styles } from '@/stylesheets/settings-stylesheet';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 
 type SettingsGroupsSectionProps = {
+  biometricsEnabled: boolean;
+  passwordSubtitle: string;
+  onToggleBiometrics?: () => void;
   onPressUserPassword?: () => void;
   onPressCurrency?: () => void;
   onPressLanguage?: () => void;
@@ -13,14 +15,15 @@ type SettingsGroupsSectionProps = {
 };
 
 export function SettingsGroupsSection({
+  biometricsEnabled,
+  passwordSubtitle,
+  onToggleBiometrics,
   onPressUserPassword,
   onPressCurrency,
   onPressLanguage,
   onPressHelpCenter,
   onPressSignOut,
 }: SettingsGroupsSectionProps) {
-  const [biometricsEnabled, setBiometricsEnabled] = useState(true);
-
   return (
     <View style={styles.settingsGroupsRoot}>
       <View style={styles.settingsGroupBlock}>
@@ -32,12 +35,12 @@ export function SettingsGroupsSection({
             subtitle={biometricsEnabled ? 'FaceID or TouchID Enabled' : 'FaceID or TouchID Disabled'}
             trailing="toggle"
             toggled={biometricsEnabled}
-            onPress={() => setBiometricsEnabled((value) => !value)}
+            onPress={onToggleBiometrics}
           />
           <SettingsOptionRow
             icon="vpn-key"
             title="User Password"
-            subtitle="Last updated 5 days ago"
+            subtitle={passwordSubtitle}
             onPress={onPressUserPassword}
           />
         </View>

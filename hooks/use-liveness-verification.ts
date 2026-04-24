@@ -7,7 +7,7 @@ import {
 } from '@/lib/liveness';
 import { type RNMLKitFace, useFaceDetection } from '@infinitered/react-native-mlkit-face-detection';
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import { useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
 const SNAPSHOT_INTERVAL_MS = 900;
 const CHALLENGE_TIMEOUT_MS = 14000;
@@ -54,19 +54,19 @@ export function useLivenessVerification({ onVerified }: UseLivenessVerificationA
     console.log(`${LIVENESS_LOG_PREFIX} ${stamp} ${event}`);
   };
 
-  const stopSessionLoop = () => {
+  const stopSessionLoop = useCallback(() => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
       logEvent('session_loop_stopped');
     }
     processingRef.current = false;
-  };
+  }, []);
 
-  const cleanup = () => {
+  const cleanup = useCallback(() => {
     stopSessionLoop();
     sessionActiveRef.current = false;
-  };
+  }, [stopSessionLoop]);
 
   const failSession = (reason: string) => {
     stopSessionLoop();

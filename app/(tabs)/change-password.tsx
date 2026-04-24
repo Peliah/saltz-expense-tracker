@@ -1,4 +1,5 @@
 import { HomeTopHeader } from '@/components/home/home-top-header';
+import { useSecuritySettings } from '@/hooks/use-security-settings';
 import { changePasswordStyles as styles } from '@/stylesheets/change-password-stylesheet';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -19,6 +20,7 @@ function evaluatePasswordStrength(password: string) {
 
 export default function ChangePasswordScreen() {
   const router = useRouter();
+  const { patch } = useSecuritySettings();
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('Pr3cisi0n!2024');
   const [confirmPassword, setConfirmPassword] = useState('Pr3cisi0n!2024');
@@ -31,9 +33,10 @@ export default function ChangePasswordScreen() {
   const passwordsMatch = newPassword.length > 0 && newPassword === confirmPassword;
   const canSubmit = currentPassword.trim().length > 0 && checks.every(Boolean) && passwordsMatch;
 
-  const handleUpdatePassword = () => {
+  const handleUpdatePassword = async () => {
     setSubmitted(true);
     if (!canSubmit) return;
+    await patch({ passwordUpdatedAt: new Date().toISOString() });
     Alert.alert('Password updated', 'Your password has been changed successfully.', [{ text: 'OK', onPress: () => router.back() }]);
   };
 
@@ -142,7 +145,12 @@ export default function ChangePasswordScreen() {
             </View>
 
             <View style={styles.actionWrap}>
-              <Pressable style={[styles.primaryBtn, !canSubmit ? styles.primaryBtnDisabled : null]} onPress={handleUpdatePassword}>
+              <Pressable
+                style={[styles.primaryBtn, !canSubmit ? styles.primaryBtnDisabled : null]}
+                onPress={() => {
+                  void handleUpdatePassword();
+                }}
+              >
                 <MaterialIcons name="update" size={14} color="#FFFFFF" />
                 <Text style={styles.primaryBtnText}>Update Password</Text>
               </Pressable>

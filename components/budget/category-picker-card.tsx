@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useState } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 
-type CategoryItem = {
+export type CategoryItem = {
   id: string;
   label: string;
   icon: React.ComponentProps<typeof MaterialIcons>['name'];
@@ -21,11 +21,12 @@ const CATEGORIES: CategoryItem[] = [
 ];
 
 type CategoryPickerCardProps = {
+  categories?: CategoryItem[];
   onSelectCategory?: (categoryId: string) => void;
   onPressAddCategory?: () => void;
 };
 
-export function CategoryPickerCard({ onSelectCategory, onPressAddCategory }: CategoryPickerCardProps) {
+export function CategoryPickerCard({ categories = CATEGORIES, onSelectCategory, onPressAddCategory }: CategoryPickerCardProps) {
   const [activeCategoryId, setActiveCategoryId] = useState('food');
 
   return (
@@ -38,7 +39,7 @@ export function CategoryPickerCard({ onSelectCategory, onPressAddCategory }: Cat
           contentContainerStyle={styles.categoryScrollerContent}
           style={styles.categoryScroller}
         >
-          {CATEGORIES.map((item) => (
+          {categories.map((item) => (
             <Pressable
               key={item.id}
               accessibilityRole="button"
