@@ -23,7 +23,7 @@ export default function OverviewScreen() {
         >
           <LedgerHeader />
           <LiquidWealthSummaryCard />
-          <AllocationsSection />
+          <AllocationsSection onPressViewAll={() => router.push('/(home)/allocations')} />
           <SpendingTrendCard />
           <RecentLedgerSection onPressViewAll={() => router.push('/(home)/recent-ledgers')} />
 
