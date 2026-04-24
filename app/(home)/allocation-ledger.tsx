@@ -34,7 +34,7 @@ export default function AllocationLedgerScreen() {
           {entries.length > 0 ? (
             <RecentLedgerList entries={entries} scrollEnabled />
           ) : (
-            <Text style={{ color: '#586377', fontFamily: 'Inter-Regular', fontSize: 14 }}>No ledgers found for this allocation.</Text>
+            <Text style={{ color: '#586377', fontFamily: 'Manrope-Regular', fontSize: 14 }}>No ledgers found for this allocation.</Text>
           )}
         </View>
       </View>

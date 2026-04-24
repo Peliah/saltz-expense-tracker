@@ -26,7 +26,7 @@ export const addAllocationStyles = StyleSheet.create({
     elevation: 2,
   },
   label: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 12,
     lineHeight: 16,
     letterSpacing: 1.2,
@@ -61,7 +61,7 @@ export const addAllocationStyles = StyleSheet.create({
     paddingVertical: 4,
   },
   amountTagText: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 12,
     lineHeight: 16,
     color: '#FFFFFF',
@@ -100,14 +100,14 @@ export const addAllocationStyles = StyleSheet.create({
     backgroundColor: '#D5E0F8',
   },
   categoryText: {
-    fontFamily: 'Inter-Medium',
+    fontFamily: 'Manrope-Medium',
     fontSize: 12,
     lineHeight: 16,
     color: '#434653',
   },
   categoryTextActive: {
     color: '#00327D',
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
   },
   sectionTitle: {
     fontFamily: 'Manrope-Bold',
@@ -133,12 +133,12 @@ export const addAllocationStyles = StyleSheet.create({
     backgroundColor: '#D5E0F8',
   },
   segmentedText: {
-    fontFamily: 'Inter-Regular',
+    fontFamily: 'Manrope-Regular',
     fontSize: 12,
     color: '#191C1E',
   },
   segmentedTextActive: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     color: '#00327D',
   },
   inputRow: {
@@ -179,12 +179,12 @@ export const addAllocationStyles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   thresholdTitle: {
-    fontFamily: 'Inter-SemiBold',
+    fontFamily: 'Manrope-SemiBold',
     fontSize: 14,
     color: '#00327D',
   },
   thresholdMeta: {
-    fontFamily: 'Inter-SemiBold',
+    fontFamily: 'Manrope-SemiBold',
     fontSize: 10,
     lineHeight: 15,
     textTransform: 'uppercase',
@@ -199,7 +199,7 @@ export const addAllocationStyles = StyleSheet.create({
   },
   notesInput: {
     minHeight: 72,
-    fontFamily: 'Inter-Regular',
+    fontFamily: 'Manrope-Regular',
     fontSize: 16,
     color: '#6B7280',
   },

@@ -90,7 +90,7 @@ export const allocationStyles = StyleSheet.create({
     paddingVertical: 4,
   },
   pillText: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 10,
     lineHeight: 15,
     letterSpacing: 1,
@@ -109,13 +109,13 @@ export const allocationStyles = StyleSheet.create({
     gap: 4,
   },
   amountMain: {
-    fontFamily: 'Inter-ExtraBold',
+    fontFamily: 'Manrope-ExtraBold',
     fontSize: 24,
     lineHeight: 32,
     color: '#191C1E',
   },
   amountBudget: {
-    fontFamily: 'Inter-Regular',
+    fontFamily: 'Manrope-Regular',
     fontSize: 14,
     lineHeight: 20,
     color: '#434653',
@@ -128,7 +128,7 @@ export const allocationStyles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   progressMeta: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: 'Manrope-Bold',
     fontSize: 11,
     lineHeight: 16,
     letterSpacing: -0.55,

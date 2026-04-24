@@ -5,9 +5,7 @@ import { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 
 type SettingsGroupsSectionProps = {
-  onPressSecurityPin?: () => void;
   onPressUserPassword?: () => void;
-  onPressTwoFactor?: () => void;
   onPressCurrency?: () => void;
   onPressLanguage?: () => void;
   onPressHelpCenter?: () => void;
@@ -15,16 +13,13 @@ type SettingsGroupsSectionProps = {
 };
 
 export function SettingsGroupsSection({
-  onPressSecurityPin,
   onPressUserPassword,
-  onPressTwoFactor,
   onPressCurrency,
   onPressLanguage,
   onPressHelpCenter,
   onPressSignOut,
 }: SettingsGroupsSectionProps) {
   const [biometricsEnabled, setBiometricsEnabled] = useState(true);
-  const [twoFactorEnabled, setTwoFactorEnabled] = useState(true);
 
   return (
     <View style={styles.settingsGroupsRoot}>
@@ -40,27 +35,10 @@ export function SettingsGroupsSection({
             onPress={() => setBiometricsEnabled((value) => !value)}
           />
           <SettingsOptionRow
-            icon="password"
-            title="Security PIN"
-            subtitle="Last updated 12 days ago"
-            onPress={onPressSecurityPin}
-          />
-          <SettingsOptionRow
             icon="vpn-key"
             title="User Password"
             subtitle="Last updated 5 days ago"
             onPress={onPressUserPassword}
-          />
-          <SettingsOptionRow
-            icon="verified-user"
-            title="Two-Factor Authentication"
-            subtitle={twoFactorEnabled ? 'Last updated 1 month ago' : 'Currently disabled'}
-            trailing="toggle"
-            toggled={twoFactorEnabled}
-            onPress={() => {
-              setTwoFactorEnabled((value) => !value);
-              onPressTwoFactor?.();
-            }}
           />
         </View>
       </View>

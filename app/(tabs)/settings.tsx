@@ -1,8 +1,8 @@
+import { LedgerHeader } from '@/components/overview/ledger-header';
 import { LedgerTierBento } from '@/components/settings/ledger-tier-bento';
 import { ProfileCard } from '@/components/settings/profile-card';
 import { SettingsGroupsSection } from '@/components/settings/settings-groups-section';
 import { useAuthSetup } from '@/context/auth-setup';
-import { LedgerHeader } from '@/components/overview/ledger-header';
 import { settingsStyles as styles } from '@/stylesheets/settings-stylesheet';
 import { useRouter } from 'expo-router';
 import { Alert, ScrollView } from 'react-native';
@@ -44,9 +44,7 @@ export default function SettingsScreen() {
           }}
         />
         <SettingsGroupsSection
-          onPressSecurityPin={() => Alert.alert('Security PIN', 'Open PIN update flow.')}
           onPressUserPassword={() => Alert.alert('User Password', 'Open password update flow.')}
-          onPressTwoFactor={() => Alert.alert('Two-Factor', 'Two-factor setting updated.')}
           onPressCurrency={() => Alert.alert('Currency', 'Open currency selector.')}
           onPressLanguage={() => Alert.alert('Language', 'Open language selector.')}
           onPressHelpCenter={() => Alert.alert('Help Center', 'Opening FAQs and support.')}
