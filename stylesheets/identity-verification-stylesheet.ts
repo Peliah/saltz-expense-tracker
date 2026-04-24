@@ -88,6 +88,20 @@ export const identityVerificationStyles = StyleSheet.create({
     letterSpacing: 0.7,
     color: '#0B1C30',
   },
+  progressText: {
+    fontFamily: 'Inter-Medium',
+    fontSize: 12,
+    lineHeight: 16,
+    color: '#44474E',
+  },
+  failureText: {
+    fontFamily: 'Inter-Medium',
+    fontSize: 12,
+    lineHeight: 16,
+    color: '#B3261E',
+    textAlign: 'center',
+    paddingHorizontal: 12,
+  },
   viewportOuter: {
     width: 280,
     height: 280,
@@ -166,6 +180,21 @@ export const identityVerificationStyles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  retryButton: {
+    height: 40,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#0051D5',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  retryButtonText: {
+    fontFamily: 'Inter-SemiBold',
+    fontSize: 13,
+    lineHeight: 16,
+    letterSpacing: 0.6,
+    color: '#0051D5',
   },
   cancelButtonText: {
     fontFamily: 'Inter-SemiBold',

@@ -2,6 +2,7 @@ import { AuthNavigationSync } from '@/components/auth/auth-navigation-sync';
 import { AuthSetupProvider, useAuthSetup } from '@/context/auth-setup';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { manropeFonts } from '@/lib/fonts';
+import { FaceDetectionProvider, type RNMLKitFaceDetectorOptions } from '@infinitered/react-native-mlkit-face-detection';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
@@ -10,6 +11,15 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
+
+const faceDetectorOptions: RNMLKitFaceDetectorOptions = {
+  performanceMode: 'accurate',
+  landmarkMode: true,
+  classificationMode: true,
+  contourMode: false,
+  isTrackingEnabled: true,
+  minFaceSize: 0.15,
+};
 
 function RootStack() {
   const colorScheme = useColorScheme();
@@ -43,9 +53,11 @@ function RootStack() {
 export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <AuthSetupProvider>
-        <RootStack />
-      </AuthSetupProvider>
+      <FaceDetectionProvider options={faceDetectorOptions} deferInitialization>
+        <AuthSetupProvider>
+          <RootStack />
+        </AuthSetupProvider>
+      </FaceDetectionProvider>
     </GestureHandlerRootView>
   );
 }

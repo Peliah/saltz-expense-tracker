@@ -42,6 +42,20 @@ To learn more about developing your project with Expo, look at the following res
 - [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
 - [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 
+## Identity liveness setup
+
+This app uses `@infinitered/react-native-mlkit-face-detection` with `expo-camera` for authentication-grade facial liveness checks.
+
+- Use a development build (`expo run:ios`, `expo run:android`, or EAS dev build). Expo Go is not sufficient for this native ML Kit flow.
+- iOS setup:
+  - After dependency changes, run `npx pod-install` (or run through `expo run:ios`).
+- Detector options currently use the iOS-friendly real-time mode:
+  - landmark + classification enabled
+  - contour mode disabled
+  - tracking enabled
+- If React Native Firebase is added later, watch for iOS pod dependency conflicts between Firebase and ML Kit Google pods. Resolve by pinning compatible pod versions via config/plugin overrides.
+- Android native builds need the Android SDK: set `ANDROID_HOME`, or add `sdk.dir=…` in `android/local.properties` (that file is gitignored). Use **JDK 17** (or 21) for Gradle; JDK 25 is not supported for this toolchain.
+
 ## Join the community
 
 Join our community of developers creating universal apps.
