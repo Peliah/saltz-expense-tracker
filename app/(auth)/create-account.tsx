@@ -1,12 +1,13 @@
-import { LoadingButton } from '@/components/shared/ui/loading-button';
 import { createAccountStyles as styles } from '@/stylesheets/create-account-stylesheet';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function CreateAccountScreen() {
   const router = useRouter();
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [busy, setBusy] = useState(false);
@@ -20,51 +21,89 @@ export default function CreateAccountScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      >
+      <KeyboardAvoidingView style={styles.keyboard} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-          <Text style={styles.title}>Create your account</Text>
-          <Text style={styles.subtitle}>Start tracking expenses with Saltz.</Text>
 
-          <Text style={styles.label}>Email</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="you@example.com"
-            placeholderTextColor="#94a3b8"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={false}
-            value={email}
-            onChangeText={setEmail}
-          />
+          <View style={styles.formSurface}>
+            <View style={styles.formCard}>
+              <View style={styles.headingBlock}>
+                <Text style={styles.title}>Create an Account</Text>
+                <Text style={styles.subtitle}>Secure your financial data today.</Text>
+              </View>
 
-          <Text style={styles.label}>Password</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="At least 8 characters"
-            placeholderTextColor="#94a3b8"
-            secureTextEntry
-            value={password}
-            onChangeText={setPassword}
-          />
+              <View style={styles.fieldGroup}>
+                <Text style={styles.label}>Full Name</Text>
+                <View style={styles.inputWrap}>
+                  <MaterialIcons name="person-outline" size={16} color="#74777F" />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="John Doe"
+                    placeholderTextColor="#A0A5B1"
+                    value={fullName}
+                    onChangeText={setFullName}
+                  />
+                </View>
+              </View>
 
-          <View style={{ marginTop: 12 }}>
-            <LoadingButton
-              text="Continue"
-              onPress={onContinue}
-              loading={busy}
-              disabled={!email.trim() || password.length < 8}
-            />
+              <View style={styles.fieldGroup}>
+                <Text style={styles.label}>Email Address</Text>
+                <View style={styles.inputWrap}>
+                  <MaterialIcons name="mail-outline" size={16} color="#74777F" />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="john@company.com"
+                    placeholderTextColor="#A0A5B1"
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    value={email}
+                    onChangeText={setEmail}
+                  />
+                </View>
+              </View>
+
+              <View style={styles.fieldGroup}>
+                <Text style={styles.label}>Password</Text>
+                <View style={styles.inputWrap}>
+                  <MaterialIcons name="lock-outline" size={16} color="#74777F" />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="••••••••"
+                    placeholderTextColor="#A0A5B1"
+                    secureTextEntry
+                    value={password}
+                    onChangeText={setPassword}
+                  />
+                </View>
+              </View>
+
+              <Pressable
+                onPress={() => {
+                  void onContinue();
+                }}
+                disabled={busy || !fullName.trim() || !email.trim() || password.length < 8}
+                style={[styles.primaryButton, (busy || !fullName.trim() || !email.trim() || password.length < 8) && styles.primaryButtonDisabled]}
+              >
+                {busy ? (
+                  <ActivityIndicator color="#FFFFFF" />
+                ) : (
+                  <>
+                    <Text style={styles.primaryButtonText}>Sign Up</Text>
+                    <MaterialIcons name="arrow-forward" size={14} color="#FFFFFF" />
+                  </>
+                )}
+              </Pressable>
+
+              <View style={styles.secondaryActionRow}>
+                <Text style={styles.secondaryActionText}>Already have an account? </Text>
+                <Pressable onPress={() => router.replace('/(auth)/identity-verification')}>
+                  <Text style={styles.secondaryActionLink}>Log In</Text>
+                </Pressable>
+              </View>
+            </View>
           </View>
 
-          <Text style={styles.footerNote}>
-            Already have an account?{' '}
-            <Pressable onPress={() => router.push('/(auth)/identity-verification')}>
-              <Text style={{ fontFamily: 'Manrope-SemiBold', color: '#0d9488' }}>Continue setup</Text>
-            </Pressable>
-          </Text>
+          <View style={styles.footer} />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

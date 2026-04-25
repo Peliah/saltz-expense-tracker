@@ -66,7 +66,7 @@ export function CategorySummarySection({ items = CATEGORY_SUMMARY_ITEMS, onPress
                 <View
                   style={[
                     styles.categorySummaryFill,
-                    { width: `${item.progress * 100}%` },
+                    { width: `${Math.max(0, Math.min(100, item.progress * 100))}%` },
                     item.tone === 'danger' ? styles.categorySummaryFillDanger : styles.categorySummaryFillPrimary,
                   ]}
                 />

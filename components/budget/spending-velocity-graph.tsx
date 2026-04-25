@@ -18,7 +18,7 @@ export function SpendingVelocityGraph({
 }: SpendingVelocityGraphProps) {
   const [chartWidth, setChartWidth] = useState(310);
 
-  const { barWidth, step, topInset, usableHeight, baselineY } = useMemo(() => {
+  const { leftInset, rightInset, barWidth, step, topInset, usableHeight, baselineY } = useMemo(() => {
     const leftInset = 8;
     const rightInset = 8;
     const top = 8;
@@ -28,7 +28,7 @@ export function SpendingVelocityGraph({
     const eachStep = usableW / days.length;
     const width = Math.min(38, eachStep - 8);
     const baseline = top + usableH;
-    return { barWidth: width, step: eachStep, topInset: top, usableHeight: usableH, baselineY: baseline };
+    return { leftInset, rightInset, barWidth: width, step: eachStep, topInset: top, usableHeight: usableH, baselineY: baseline };
   }, [chartHeight, chartWidth, days.length]);
 
   const maxValue = Math.max(...target, ...actual, 1);
@@ -48,9 +48,9 @@ export function SpendingVelocityGraph({
           return (
             <Line
               key={tick}
-              x1={0}
+              x1={leftInset}
               y1={y}
-              x2={chartWidth}
+              x2={chartWidth - rightInset}
               y2={y}
               stroke="#D1D5DB"
               strokeWidth={1}
@@ -60,7 +60,7 @@ export function SpendingVelocityGraph({
         })}
 
         {days.map((_, index) => {
-          const centerX = step * index + step / 2;
+          const centerX = leftInset + step * index + step / 2;
           const x = centerX - barWidth / 2;
           const targetHeight = (target[index] / maxValue) * usableHeight;
           const actualHeight = (actual[index] / maxValue) * usableHeight;
@@ -88,10 +88,10 @@ export function SpendingVelocityGraph({
         })}
       </Svg>
       <View style={styles.velocityAxisRow}>
-        {days.map((day) => (
-          <Text key={day} style={styles.velocityBarLabel}>
-            {day}
-          </Text>
+        {days.map((day, index) => (
+          <View key={`${day}-${index}`} style={[styles.velocityAxisLabelWrap, { width: step }]}>
+            <Text style={styles.velocityBarLabel}>{day}</Text>
+          </View>
         ))}
       </View>
     </View>

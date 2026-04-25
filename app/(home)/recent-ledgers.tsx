@@ -4,7 +4,7 @@ import { RecentLedgerList } from '@/components/overview/recent-ledger-list';
 import { useCategories } from '@/hooks/use-categories';
 import { useTransactions } from '@/hooks/use-transactions';
 import { selectRecentLedgerEntries } from '@/lib/selectors/ledger-selectors';
-import { overviewStyles as overviewStyles } from '@/stylesheets/overview-stylesheet';
+import { overviewStyles } from '@/stylesheets/overview-stylesheet';
 import { useRouter } from 'expo-router';
 import { useMemo } from 'react';
 import { ScrollView, View } from 'react-native';
@@ -25,7 +25,7 @@ export default function RecentLedgersScreen() {
           <View style={{ marginTop: 24 }}>
             <NewAllocationCard
               onPressQuickAdd={() => {
-                router.push('/(home)/add-transaction');
+                router.push('/(home)/add-allocation');
               }}
             />
           </View>

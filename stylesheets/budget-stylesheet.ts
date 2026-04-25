@@ -73,6 +73,7 @@ export const budgetStyles = StyleSheet.create({
     width: '62%',
     height: '100%',
     borderRadius: 9999,
+    alignSelf: 'flex-start',
   },
   monthlyBurnBottomRow: {
     flexDirection: 'row',
@@ -138,9 +139,12 @@ export const budgetStyles = StyleSheet.create({
   velocityAxisRow: {
     marginTop: 8,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 6,
+    paddingHorizontal: 8,
+  },
+  velocityAxisLabelWrap: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   velocityBarLabel: {
     fontFamily: 'Manrope-Bold',
@@ -328,6 +332,7 @@ export const budgetStyles = StyleSheet.create({
   categorySummaryFill: {
     height: '100%',
     borderRadius: 9999,
+    alignSelf: 'flex-start',
   },
   categorySummaryFillPrimary: {
     backgroundColor: '#00327D',

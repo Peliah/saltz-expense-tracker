@@ -1,5 +1,8 @@
 import { addAllocationStyles as styles } from '@/stylesheets/add-allocation-stylesheet';
-import { Pressable, Switch, Text, TextInput, View } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { useMemo, useState } from 'react';
+import { Platform, Pressable, Switch, Text, View } from 'react-native';
+import type { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 
 type Timeframe = 'Daily' | 'Weekly' | 'Monthly';
 
@@ -26,6 +29,30 @@ export function AddAllocationConfigCard({
   onChangeRecurring,
   onChangeThresholdEnabled,
 }: AddAllocationConfigCardProps) {
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const parsedDate = useMemo(() => {
+    if (!date) return new Date();
+    const parsed = new Date(date);
+    return Number.isNaN(parsed.getTime()) ? new Date() : parsed;
+  }, [date]);
+
+  const dateLabel = useMemo(() => {
+    if (!date) return '';
+    const parsed = new Date(date);
+    if (Number.isNaN(parsed.getTime())) return '';
+    return parsed.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+  }, [date]);
+
+  const onPickDate = (event: DateTimePickerEvent, selectedDate?: Date) => {
+    // Android date picker is a modal; hide it after any interaction.
+    if (Platform.OS === 'android') {
+      setShowDatePicker(false);
+    }
+    if (event.type !== 'set' || !selectedDate) return;
+    onChangeDate(selectedDate.toISOString());
+  };
+
   return (
     <View style={styles.card}>
       <Text style={styles.sectionTitle}>Timeframe</Text>
@@ -42,8 +69,18 @@ export function AddAllocationConfigCard({
 
       <View style={styles.inputRow}>
         <Text style={styles.label}>Date</Text>
-        <TextInput style={styles.textInput} value={date} onChangeText={onChangeDate} placeholder="11/24/2023" placeholderTextColor="#6B7280" />
+        <Pressable onPress={() => setShowDatePicker(true)}>
+          <Text style={[styles.textInput, { color: dateLabel ? '#191C1E' : '#6B7280' }]}>{dateLabel || '11/24/2023'}</Text>
+        </Pressable>
       </View>
+      {showDatePicker ? (
+        <DateTimePicker
+          value={parsedDate}
+          mode="date"
+          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+          onChange={onPickDate}
+        />
+      ) : null}
 
       <View style={styles.toggleRow}>
         <Text style={styles.toggleLabel}>Recurring Transaction</Text>

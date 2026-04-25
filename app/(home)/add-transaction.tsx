@@ -13,7 +13,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Animated, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const MODES: { id: TransactionMode; label: string }[] = [
   { id: 'manual', label: 'Manual' },
@@ -22,6 +22,7 @@ const MODES: { id: TransactionMode; label: string }[] = [
 ];
 
 export default function AddTransactionScreen() {
+  const insets = useSafeAreaInsets();
   const router = useRouter();
   const params = useLocalSearchParams<{ tab?: string; type?: string }>();
   const { categories } = useCategories();
@@ -79,7 +80,7 @@ export default function AddTransactionScreen() {
   }, [indicatorX, modeIndex, tabWidth]);
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -157,7 +158,7 @@ export default function AddTransactionScreen() {
           )}
         </ScrollView>
 
-        <View style={styles.fabBar}>
+        <View style={[styles.fabBar, { paddingBottom: Math.max(insets.bottom, 16) }]}>
           <View style={{ paddingBottom: 8, alignItems: 'center' }}>
             <Text style={{ fontFamily: 'Manrope-SemiBold', color: '#00327D' }}>
               {transactionType === 'deposit' ? 'Deposit' : 'Withdraw'}

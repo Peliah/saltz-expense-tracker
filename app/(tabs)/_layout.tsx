@@ -1,48 +1,76 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import { HapticTab } from '@/components/shared/haptic-tab';
-import { IconSymbol } from '@/components/shared/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: '#0047AB',
+        tabBarInactiveTintColor: '#8FA0B8',
         headerShown: false,
         tabBarButton: HapticTab,
+        tabBarLabelStyle: {
+          fontFamily: 'Manrope-SemiBold',
+          fontSize: 12,
+          lineHeight: 14,
+          letterSpacing: 0.8,
+          marginTop: 4,
+          marginBottom: 2,
+        },
+        tabBarIconStyle: {
+          marginTop: 4,
+        },
+        tabBarItemStyle: {
+          borderRadius: 16,
+          marginHorizontal: 2,
+          marginVertical: 10,
+          paddingVertical: 6,
+        },
+        tabBarActiveBackgroundColor: '#D6DFEC',
+        tabBarStyle: {
+          position: 'relative',
+          height: 92,
+          paddingHorizontal: 8,
+          paddingTop: 6,
+          paddingBottom: 8,
+          backgroundColor: '#FFFFFF',
+          borderTopWidth: 1,
+          borderTopColor: '#E2E8F0',
+          borderRadius: 0,
+          elevation: 0,
+          shadowOpacity: 0,
+        },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Overview',
-          tabBarIcon: ({ color }) => <IconSymbol size={26} name="house.fill" color={color} />,
+          title: 'OVERVIEW',
+          tabBarIcon: ({ color }) => <MaterialIcons size={24} name="grid-view" color={color} />,
         }}
       />
       <Tabs.Screen
         name="budget"
         options={{
-          title: 'Budget',
-          tabBarIcon: ({ color }) => <IconSymbol size={26} name="chart.bar.fill" color={color} />,
+          title: 'BUDGETS',
+          tabBarIcon: ({ color }) => <MaterialIcons size={24} name="account-balance-wallet" color={color} />,
         }}
       />
       <Tabs.Screen
         name="insights"
         options={{
-          title: 'Insights',
-          tabBarIcon: ({ color }) => <IconSymbol size={26} name="lightbulb.fill" color={color} />,
+          title: 'INSIGHTS',
+          tabBarIcon: ({ color }) => <MaterialIcons size={24} name="insights" color={color} />,
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
-          title: 'Settings',
-          tabBarIcon: ({ color }) => <IconSymbol size={26} name="gearshape.fill" color={color} />,
+          title: 'SETTINGS',
+          tabBarIcon: ({ color }) => <MaterialIcons size={24} name="settings" color={color} />,
         }}
       />
       <Tabs.Screen

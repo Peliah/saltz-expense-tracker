@@ -29,7 +29,7 @@ export default function AddAllocationScreen() {
   const [amountFocused, setAmountFocused] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('food');
   const [timeframe, setTimeframe] = useState<'Daily' | 'Weekly' | 'Monthly'>('Weekly');
-  const [date, setDate] = useState('11/24/2023');
+  const [date, setDate] = useState(new Date().toISOString());
   const [recurring, setRecurring] = useState(false);
   const [thresholdEnabled, setThresholdEnabled] = useState(true);
   const [notes, setNotes] = useState('');

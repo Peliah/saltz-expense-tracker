@@ -31,7 +31,7 @@ export default function IdentityVerificationScreen() {
     onVerified: async () => {
       await markIdentityVerified();
       await setComplete(true);
-      router.push('/(auth)/new-password');
+      router.push('/(auth)/verification-success');
     },
   });
 
@@ -114,7 +114,7 @@ export default function IdentityVerificationScreen() {
               </Pressable>
             ) : null}
 
-            <Pressable accessibilityRole="button" accessibilityLabel="Cancel" onPress={() => router.back()} style={styles.cancelButton}>
+            <Pressable accessibilityRole="button" accessibilityLabel="Cancel" onPress={() => router.replace('/(auth)/create-account')} style={styles.cancelButton}>
               <Text style={styles.cancelButtonText}>Cancel</Text>
             </Pressable>
           </View>
