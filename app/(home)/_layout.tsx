@@ -6,6 +6,7 @@ export default function HomeLayout() {
     <TransactionDraftProvider>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="add-transaction" />
+        <Stack.Screen name="captured-data" />
         <Stack.Screen name="add-allocation" />
         <Stack.Screen name="allocation-ledger" />
         <Stack.Screen name="allocations" />

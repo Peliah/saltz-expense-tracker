@@ -1,15 +1,14 @@
-import { TransactionAmountCard } from '@/components/home/transaction-amount-card';
-import { TransactionDetailsCard } from '@/components/home/transaction-details-card';
+import { AddTransactionCaptureMode } from '@/components/home/add-transaction-capture-mode';
+import { AddTransactionManualMode } from '@/components/home/add-transaction-manual-mode';
+import { AddTransactionUploadMode } from '@/components/home/add-transaction-upload-mode';
 import { HomeTopHeader } from '@/components/home/home-top-header';
 import { TransactionModeToggle, type TransactionMode } from '@/components/home/transaction-mode-toggle';
-import { TransactionNotesCard } from '@/components/home/transaction-notes-card';
 import { useCategories } from '@/hooks/use-categories';
 import { useSecuritySettings } from '@/hooks/use-security-settings';
 import { useTransactionDraft } from '@/hooks/use-transaction-draft';
 import { useTransactions } from '@/hooks/use-transactions';
 import type { TransactionType } from '@/lib/types/domain';
 import { fabsStyles as styles } from '@/stylesheets/fabs-stylesheet';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Animated, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from 'react-native';
@@ -106,56 +105,33 @@ export default function AddTransactionScreen() {
           showsVerticalScrollIndicator={false}
         >
           {mode === 'manual' ? (
-            <>
-              {showAllocationList ? (
-                <View style={styles.allocationList}>
-                  {categories.map((category) => (
-                    <Pressable
-                      key={category.id}
-                      style={styles.allocationItem}
-                      onPress={() => {
-                        setAllocation(category.name);
-                        setShowAllocationList(false);
-                      }}
-                    >
-                      <Text style={styles.allocationItemText}>{category.name}</Text>
-                    </Pressable>
-                  ))}
-                </View>
-              ) : null}
-
-              <TransactionDetailsCard
-                transactionName={transactionName}
-                transactionDate={transactionDate}
-                allocation={allocation}
-                onChangeTransactionName={setTransactionName}
-                onChangeTransactionDate={setTransactionDate}
-                onToggleAllocation={() => setShowAllocationList((prev) => !prev)}
-              />
-
-              <TransactionAmountCard
-                amount={amount}
-                onPressKey={(key) => {
-                  if (key === '⌫') {
-                    backspaceAmount();
-                    return;
-                  }
-                  appendAmount(key);
-                }}
-              />
-
-              <TransactionNotesCard notes={notes} onChangeNotes={setNotes} />
-            </>
-          ) : (
-            <View style={styles.captureCard}>
-              <View style={{ width: 64, height: 64, borderRadius: 16, backgroundColor: '#D5E0F8', alignItems: 'center', justifyContent: 'center' }}>
-                <MaterialIcons name={mode === 'capture' ? 'document-scanner' : 'upload-file'} size={26} color="#00327D" />
-              </View>
-              <Text style={styles.captureTitle}>
-                {mode === 'capture' ? 'Capture\nsomething\nFigure this one out!!!' : 'Result of captured\nData\nFigure this one out too !!!'}
-              </Text>
-            </View>
-          )}
+            <AddTransactionManualMode
+              showAllocationList={showAllocationList}
+              categories={categories}
+              transactionName={transactionName}
+              transactionDate={transactionDate}
+              allocation={allocation}
+              amount={amount}
+              notes={notes}
+              onSelectAllocation={(value) => {
+                setAllocation(value);
+                setShowAllocationList(false);
+              }}
+              onToggleAllocationList={() => setShowAllocationList((prev) => !prev)}
+              onChangeTransactionName={setTransactionName}
+              onChangeTransactionDate={setTransactionDate}
+              onChangeNotes={setNotes}
+              onPressAmountKey={(key) => {
+                if (key === '⌫') {
+                  backspaceAmount();
+                  return;
+                }
+                appendAmount(key);
+              }}
+            />
+          ) : null}
+          {mode === 'capture' ? <AddTransactionCaptureMode /> : null}
+          {mode === 'upload' ? <AddTransactionUploadMode /> : null}
         </ScrollView>
 
         <View style={[styles.fabBar, { paddingBottom: Math.max(insets.bottom, 16) }]}>
@@ -167,6 +143,13 @@ export default function AddTransactionScreen() {
           <Pressable
             style={styles.primaryAction}
             onPress={async () => {
+              if (mode === 'capture' || mode === 'upload') {
+                router.push({
+                  pathname: '/(home)/captured-data',
+                  params: { source: mode },
+                });
+                return;
+              }
               if (!amount) {
                 Alert.alert('Missing amount', 'Please enter a valid amount.');
                 return;
